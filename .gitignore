@@ -1,0 +1,27 @@
+# Python / PyTorch Cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual Environment (if any)
+venv/
+env/
+.env/
+
+# Model Checkpoints & Large Binaries (>100MB cannot be pushed to GitHub)
+checkpoints/
+*.pt
+*.bin
+*.safetensors
+*.pth
+*.onnx
+
+# Temporary & OS files
+.DS_Store
+Thumbs.db
+*.tmp

@@ -1,0 +1,21 @@
+{
+  "total_pairs": 10869,
+  "levenshtein_mean": 1.4719845431962462,
+  "levenshtein_std": 0.708583429118722,
+  "levenshtein_median": 1.0,
+  "levenshtein_min": 1,
+  "levenshtein_max": 9,
+  "norm_levenshtein_mean": 0.23161236898471235,
+  "norm_levenshtein_std": 0.10818349133536516,
+  "norm_levenshtein_median": 0.2,
+  "distance_frequencies": {
+    "1": 6864,
+    "2": 3082,
+    "3": 754,
+    "4": 143,
+    "5": 23,
+    "6": 1,
+    "7": 1,
+    "9": 1
+  }
+}

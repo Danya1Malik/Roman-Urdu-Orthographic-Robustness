@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Robustness of Roman Urdu Sentiment Classification to Orthographic Spelling Variation</title>
+<style>
+  @page {
+    size: letter;
+    margin: 0.75in 0.625in 0.75in 0.625in;
+  }
+  body {
+    font-family: "Times New Roman", Times, serif;
+    font-size: 10pt;
+    line-height: 1.15;
+    color: #000;
+    margin: 0;
+    padding: 0;
+    text-align: justify;
+    background: #fff;
+  }
+  .title-area {
+    text-align: center;
+    margin-bottom: 12pt;
+    padding-bottom: 2pt;
+  }
+  h1.paper-title {
+    font-size: 19pt;
+    font-weight: bold;
+    margin: 0 0 8pt 0;
+    line-height: 1.18;
+  }
+  .authors-block {
+    text-align: center;
+    margin-bottom: 12pt;
+    line-height: 1.25;
+  }
+  .author-name {
+    font-size: 11pt;
+    font-weight: bold;
+  }
+  .author-affil {
+    font-style: italic;
+    font-size: 9.5pt;
+  }
+  .author-email {
+    font-family: "Courier New", Courier, monospace;
+    font-size: 9pt;
+  }
+  
+  /* Two-column layout */
+  .two-col-container {
+    column-count: 2;
+    column-gap: 0.25in;
+    column-fill: balance;
+  }
+
+  .abstract-box {
+    margin-bottom: 8pt;
+  }
+  
+  h2.sec-heading {
+    font-size: 10pt;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-align: center;
+    margin-top: 10pt;
+    margin-bottom: 3pt;
+    break-after: avoid;
+  }
+  h3.subsec-heading {
+    font-size: 9.5pt;
+    font-weight: bold;
+    font-style: italic;
+    margin-top: 7pt;
+    margin-bottom: 2pt;
+    break-after: avoid;
+  }
+
+  p {
+    text-indent: 1.2em;
+    margin: 0 0 3pt 0;
+  }
+  p.no-indent {
+    text-indent: 0;
+  }
+
+  /* Tables */
+  table.ieee-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 6pt 0;
+    font-size: 7.5pt;
+    line-height: 1.1;
+  }
+  table.ieee-table th, table.ieee-table td {
+    padding: 2.5pt 1.5pt;
+    text-align: center;
+  }
+  table.ieee-table th {
+    border-top: 1.2pt solid black;
+    border-bottom: 0.8pt solid black;
+    font-weight: bold;
+  }
+  table.ieee-table tr.mid-rule th, table.ieee-table tr.mid-rule td {
+    border-bottom: 0.5pt solid #888;
+  }
+  table.ieee-table tr.bottom-rule td {
+    border-bottom: 1.2pt solid black;
+  }
+  .table-caption {
+    font-size: 8pt;
+    text-transform: uppercase;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 2pt;
+    letter-spacing: 0.5px;
+  }
+  .table-subcaption {
+    font-size: 7.5pt;
+    text-align: center;
+    font-style: italic;
+    margin-bottom: 3pt;
+  }
+
+  /* Figures */
+  .fig-box {
+    margin: 6pt 0;
+    text-align: center;
+    break-inside: avoid;
+  }
+  .fig-box img {
+    max-width: 100%;
+    height: auto;
+  }
+  .fig-caption {
+    font-size: 8pt;
+    text-align: justify;
+    margin-top: 2pt;
+    line-height: 1.15;
+  }
+  .fig-caption b {
+    font-weight: bold;
+  }
+
+  /* Lists */
+  ol, ul {
+    margin: 0 0 4pt 0;
+    padding-left: 1.3em;
+  }
+  li {
+    margin-bottom: 1.5pt;
+  }
+
+  /* References */
+  .references-list {
+    font-size: 7.5pt;
+    line-height: 1.15;
+    padding-left: 1.4em;
+    margin-top: 4pt;
+  }
+  .references-list li {
+    margin-bottom: 2.5pt;
+    text-indent: -1.4em;
+    padding-left: 1.4em;
+    list-style-type: none;
+  }
+</style>
+</head>
+<body>
+
+<div class="title-area">
+  <h1 class="paper-title">Robustness of Roman Urdu Sentiment Classification to Orthographic Spelling Variation: A Comparative Study of Full Fine-Tuning and Parameter-Efficient Adaptation of Multilingual Transformers</h1>
+  
+  <div class="authors-block">
+    <div class="author-name">Danyal Ahmed Malik</div>
+    <div class="author-affil">Department of Data Science — Graduate Studies<br>National University of Computer & Emerging Sciences (FAST-NUCES)<br>Islamabad, Pakistan</div>
+    <div class="author-email">i268030@isb.nu.edu.pk</div>
+  </div>
+</div>
+
+<div class="two-col-container">
+
+  <div class="abstract-box">
+    <p class="no-indent"><b><i>Abstract</i>&mdash;Roman Urdu has become the dominant vernacular medium for informal digital communication across South Asia. However, because it lacks a standardized orthography, identical phonemes and lexical items manifest in widely divergent spelling forms. While multilingual transformer architectures such as mBERT and XLM-RoBERTa have achieved state-of-the-art results on clean benchmark splits, their robustness under systematic, graded orthographic noise remains largely unexamined. Furthermore, it remains unknown whether Parameter-Efficient Fine-Tuning (PEFT) via Low-Rank Adaptation (LoRA) confers superior regularized resilience compared to full fine-tuning. In this study, we present a rigorous, end-to-end empirical investigation into Roman Urdu orthographic robustness. Conducting an independent data audit on the 28,090-review RUWV-NSR dataset, we resolve severe label corruption and eliminate 4,632 exact duplicate reviews (16.49%) to establish a strictly leakage-free benchmark. Pairing the corpus with a 5,244-word authentic spelling-variation lexicon (10,869 variant pairs), we design controlled canonical perturbation conditions (Mild, Moderate, Severe) alongside a full 3&times;3 factorial grid disentangling substitution density from character edit distance. We comprehensively evaluate TF-IDF + Logistic Regression, fully fine-tuned mBERT, fully fine-tuned XLM-RoBERTa, and LoRA-adapted XLM-RoBERTa. Our findings demonstrate that LoRA adaptation exhibits substantially superior orthographic resilience, incurring only a 4.68% relative Macro-F1 degradation under severe noise compared to 7.01% for fully fine-tuned XLM-RoBERTa and 16.42% for the classical baseline. Token fertility profiling reveals that SentencePiece tokenization suffers significantly less fragmentation than WordPiece under variant spellings. Additionally, normalization ablations prove that research-specific lexicon mapping recovers 84.23%–93.79% of spelling-induced performance loss, whereas generic preprocessing yields zero or negative recovery. External validation across 3,000 independent Daraz.pk e-commerce reviews confirms the domain generalizability of these findings.</b></p>
+    <p class="no-indent" style="margin-top: 3pt;"><b><i>Keywords</i>&mdash;Roman Urdu, Sentiment Analysis, Orthographic Robustness, Multilingual Transformers, Low-Rank Adaptation (LoRA), Parameter-Efficient Fine-Tuning (PEFT), Spelling Perturbation.</b></p>
+  </div>
+
+  <h2 class="sec-heading">I. Introduction</h2>
+  <p>Roman Urdu&mdash;the phonological transcription of the Urdu language using the standard 26-letter Latin alphabet&mdash;has emerged as the de facto written medium for informal digital communication across Pakistan and the broader South Asian diaspora. It permeates user reviews on e-commerce platforms, customer feedback on social media channels, and mobile instant messaging. Despite its ubiquity, Roman Urdu is strictly an unstandardized vernacular. While classical Nastaliq Urdu employs an alphabet of 36 distinct characters with formal orthographic rules, Roman Urdu lacks any centralized standardizing authority or agreed-upon phonetic mapping. Consequently, native speakers write purely by acoustic approximation.</p>
+  
+  <p>A single lexical item or sentiment-bearing predicate can easily manifest in several divergent spelling variations depending entirely on individual typists, regional phonology, and texting conventions. For instance, the core affirmation <i>accha</i> (&ldquo;good&rdquo;) frequently appears as <i>acha</i>, <i>achha</i>, <i>achaah</i>, or <i>achaaa</i>; similarly, the negation <i>nahi</i> (&ldquo;not&rdquo;) is written interchangeably as <i>nhn</i>, <i>nahin</i>, <i>nhi</i>, or <i>nahe</i>. In the context of automated Natural Language Processing (NLP), and Sentiment Analysis (SA) in particular, this extreme orthographic entropy poses a formidable challenge.</p>
+  
+  <p>In contemporary NLP research, Pre-trained Multilingual Language Models (PMLMs) such as multilingual BERT (mBERT) [1] and XLM-RoBERTa (XLM-R) [2] have demonstrated state-of-the-art classification performance on code-mixed and low-resource benchmarks. However, the standard evaluation paradigm in the literature remains fundamentally flawed: models are trained and tested on single, static, identically distributed (i.i.d.) random splits of a scraped corpus. When an automated classifier achieves high benchmark accuracy under such conditions, it often reflects memorization of canonical spelling forms within a closed vocabulary rather than generalized sentiment comprehension. In live production environments, incoming text exhibits uncontrolled spelling shifts that induce severe out-of-vocabulary (OOV) rates, token fragmentation, and downstream classification failure.</p>
+  
+  <p>Recent literature explicitly acknowledges this bottleneck. Notably, Nazir et al. [3] benchmarked mBERT on code-mixed Roman Urdu and Roman Punjabi social media reviews, demonstrating strong in-domain accuracy (79.94%) but observing that generic text preprocessing (e.g., stop-word and punctuation removal) produced only marginal improvements (2.71%). The authors highlighted that imperfect Romanized text normalization remains an unaddressed limitation. In parallel, Khan et al. [4] investigated vocabulary expansion on the Roman Urdu Word Variations and Normalized Sentiment Review (RUWV-NSR) dataset [6], focusing on embedding-space drift. However, no prior work has systematically quantified the degradation curves of multilingual transformers under controlled, graded orthographic noise, nor investigated whether adaptation strategy influences robustness.</p>
+  
+  <p>This study directly bridges this critical empirical gap. Treating Roman Urdu sentiment classification as a rigorous, end-to-end data-science pipeline, we investigate the following core research questions:</p>
+  <ul>
+    <li><b>RQ1:</b> <i>Degradation Under Orthographic Noise:</i> How does sentiment classification performance degrade across increasing severity levels of authentic spelling variation for classical versus transformer-based architectures?</li>
+    <li><b>RQ2:</b> <i>Parameter-Efficient vs. Full Adaptation:</i> Does Low-Rank Adaptation (LoRA) [5] confer greater robustness against orthographic perturbation compared to unconstrained full fine-tuning?</li>
+    <li><b>RQ3:</b> <i>Token Fragmentation Profiling:</i> To what extent do distinct subword tokenization schemes (WordPiece vs. SentencePiece/BPE) fragment authentic lexical variants, and how does this correlate with performance drop?</li>
+    <li><b>RQ4:</b> <i>Factorial Disentanglement:</i> Is performance degradation predominantly driven by word substitution rate, character edit distance, or their mutual interaction?</li>
+    <li><b>RQ5:</b> <i>Mitigation and Normalization:</i> Can lexicon-driven orthographic normalization or noise-augmented training reverse perturbation losses where generic preprocessing fails?</li>
+  </ul>
+  
+  <p>To answer these questions, we perform an independent data audit on the RUWV-NSR corpus, resolving pervasive label corruption and eliminating 4,632 exact duplicate reviews (16.49%) to establish a strictly leakage-free benchmark. Leveraging a paired lexicon of 5,244 words (10,869 authentic variant pairs), we develop a perturbation engine that constructs canonical noise tiers alongside a full 3&times;3 factorial grid. We benchmark four primary modeling paradigms: TF-IDF + Logistic Regression, fully fine-tuned mBERT, fully fine-tuned XLM-RoBERTa, and LoRA-adapted XLM-RoBERTa. Finally, we execute normalization ablations and validate cross-domain generalizability on 3,000 independent reviews from the Daraz.pk RUECD corpus [7].</p>
+
+  <h2 class="sec-heading">II. Related Work</h2>
+  <h3 class="subsec-heading">A. Multiclass Sentiment Classification in Roman Urdu</h3>
+  <p>Early computational investigations in Roman Urdu sentiment analysis relied heavily on surface-level feature engineering, employing Bag-of-Words representations, character n-grams, and classical machine learning estimators such as Support Vector Machines (SVM), Naive Bayes, and Random Forests [7]. While character n-grams partially alleviate minor typing slips by capturing sub-word substrings, classical estimators are fundamentally incapable of modeling long-range syntactic dependencies, negation scope, and polysemy.</p>
+  
+  <p>The introduction of multilingual pre-trained encoders catalyzed significant progress. Devlin et al. [1] established the efficacy of multilingual BERT (mBERT), pre-trained across 104 languages on Wikipedia corpora. Conneau et al. [2] subsequently introduced XLM-RoBERTa (XLM-R), trained on 2.5TB of filtered CommonCrawl data in 100 languages, demonstrating substantial performance advantages in cross-lingual transfer benchmarks.</p>
+  
+  <p>In a notable recent study, Nazir et al. [3] proposed CMSA-mBERT for three-class sentiment analysis across 48,324 Roman Urdu and Roman Punjabi code-mixed reviews. Their model achieved a benchmark accuracy of 79.94%, outperforming traditional ML and recurrent architectures (LSTM, BiLSTM, GRU). Crucially, the authors observed that standard preprocessing techniques produced only an insubstantial 2.71% improvement, citing unstandardized Romanized orthography as an intractable limitation. However, their experimental design was restricted to a single clean 80/20 train/test split, leaving the models' resilience to spelling noise untested.</p>
+
+  <h3 class="subsec-heading">B. Vocabulary Adaptation and Embedding Stability</h3>
+  <p>Multilingual language models typically suffer from representation degradation when applied to languages absent from their pre-training corpora. Because Roman Urdu is underrepresented in mBERT and XLM-RoBERTa, native words are fragmented into highly localized subword units. Addressing this phenomenon, Khan et al. [4] introduced ROMEVA, an anchor-loss vocabulary expansion technique designed to preserve embedding-space geometry when adapting mBERT to Roman Urdu using the RUWV-NSR dataset [6]. Their findings indicated that while unconstrained naive fine-tuning disrupted the pre-trained semantic geometry more severely than constrained methods, it paradoxically achieved superior downstream classification accuracy. Nevertheless, Khan et al. focused exclusively on embedding drift rather than input-level orthographic perturbation, did not evaluate parameter-efficient tuning paradigms, and evaluated solely on unaltered review splits.</p>
+
+  <h3 class="subsec-heading">C. Robustness and Perturbation Evaluation</h3>
+  <p>Assessing the brittle nature of deep neural language models under input perturbations is an active subfield. Moradi and Samwald [8] systematically evaluated transformer architectures under synthetic character-level noises (random character insertion, deletion, and swap), finding severe degradation across standard benchmarks. However, existing perturbation benchmarks predominantly introduce synthetic typographic noise rather than authentic, sociolinguistically validated spelling variations. In Roman Urdu, spelling variation is not random noise but a structured phonological phenomenon. By leveraging an authentic, human-documented variation lexicon, our work provides the first controlled robustness benchmark for Roman Urdu sentiment classification.</p>
+
+  <h3 class="subsec-heading">D. Parameter-Efficient Fine-Tuning (PEFT)</h3>
+  <p>As language models have scaled, parameter-efficient adaptation methods have emerged as powerful alternatives to full fine-tuning. Hu et al. [5] introduced Low-Rank Adaptation (LoRA), which freezes the pre-trained backbone weights and injects trainable rank-decomposition matrices into multi-head self-attention projections. Beyond drastically reducing trainable parameters and GPU memory overhead, recent theoretical insights suggest that constraining updates to low-rank subspaces acts as implicit regularization, mitigating catastrophic forgetting of pre-trained linguistic priors. In this paper, we hypothesize that this regularization makes LoRA inherently more resilient to input orthographic shifts than full parameter updates.</p>
+
+  <h2 class="sec-heading">III. Data Pipeline and Orthographic Perturbation</h2>
+  <h3 class="subsec-heading">A. Data Audit, Inconsistency Resolution, and Deduplication</h3>
+  <p>Our primary experimental benchmark is constructed from the Roman Urdu Word Variations and Normalized Sentiment Review Dataset (RUWV-NSR) [6], acquired from Mendeley Data under a CC BY 4.0 license. The corpus comprises 28,090 reviews collected across seven online domains alongside a dedicated Roman Urdu spelling-variation lexicon containing 5,244 headwords.</p>
+  
+  <p>Prior to modeling, we performed an independent data audit that revealed critical anomalies necessitating rigorous data engineering: (1) <i>Label Inconsistency:</i> Target annotations were distributed across eight conflicting string representations due to casing disparities and lexical errors (e.g., <code>"Neative"</code>). We canonicalized these into five balanced classes: <i>very positive</i> ($N=5,008$), <i>positive</i> ($N=6,288$), <i>neutral</i> ($N=6,445$), <i>negative</i> ($N=6,036$), and <i>very negative</i> ($N=4,313$). (2) <i>Severe Duplication:</i> We detected 4,632 exact duplicate reviews (16.49% of the raw corpus). Crucially, a subset of identical textual reviews was annotated with conflicting sentiment labels across different collection runs. Retaining duplicated instances introduces direct data leakage across train/test splits and artificially inflates cross-validation metrics. Eliminating duplicates reduced the corpus to 23,458 pristine, unique reviews.</p>
+
+  <h3 class="subsec-heading">B. Lexicon Processing and Inversion</h3>
+  <p>The RUWV-NSR lexicon documents 5,219 unique headwords paired with up to five attested spelling variations. To enable rapid, deterministic perturbation and normalization, we inverted the lexicon structure into a lookup hash table mapping each authentic variant $v$ back to its canonical form $c$, computing its Levenshtein edit distance normalized by word length. This yielded 10,869 authentic lexical variant pairs with an average Levenshtein distance of 1.76 characters.</p>
+
+  <h3 class="subsec-heading">C. Leakage-Free Stratified Partitioning</h3>
+  <p>To prevent distributional bias, the deduplicated dataset ($N=23,458$) was partitioned using stratified sampling (random seed 42) into: <b>Train Set (70%):</b> 16,420 reviews; <b>Validation Set (15%):</b> 3,519 reviews; and <b>Test Set (15%):</b> 3,519 reviews. The class distribution was strictly preserved across all splits: Neutral (~25.9%), Positive (~25.2%), Negative (~24.4%), Very Positive (~13.5%), and Very Negative (~11.0%).</p>
+
+  <h3 class="subsec-heading">D. Controlled Perturbation Engine</h3>
+  <p>To evaluate model degradation without label drift, we engineered an authentic variant substitution engine operating strictly on the test partition ($N=3,519$). Sentences are tokenized, and each token matching a canonical headword is eligible for substitution with probability $p_{\text{sub}}$: (1) <i>Canonical Severity Conditions:</i> Four standardized tiers were operationalized: Clean (0%), Mild (25%), Moderate (50%), and Severe (90%). Across the 3,519 test instances, the average number of modified words per review rose monotonically from 0.00 (Clean) to 1.72 (Mild), 3.42 (Moderate), and 6.13 (Severe), with character error rates increasing from 0.00% to 12.38%. (2) <i>3&times;3 Factorial Grid Design:</i> To disentangle substitution density from typographic divergence, we built a 3&times;3 factorial grid crossing substitution density (25%, 50%, 90%) with variant selection policies: Low Distance, Random Distance, and High Distance. This yielded nine independently generated test splits.</p>
+
+  <h3 class="subsec-heading">E. Subword Fragmentation Profiling</h3>
+  <p>Measuring token fertility across the 10,869 variant pairs demonstrated a striking contrast between WordPiece (mBERT) and SentencePiece/BPE (XLM-RoBERTa): for mBERT, canonical words average 1.74 tokens while variant spellings average 2.21 tokens (fertility expansion of +27.0%). For XLM-RoBERTa, canonical words average 1.48 tokens while variant spellings average 1.79 tokens (fertility expansion of +20.9%). SentencePiece utilizes a larger vocabulary (250,000 vs. 119,547 tokens) and handles whitespace explicitly with meta-symbols, resulting in significantly lower fragmentation and higher morphological stability under orthographic perturbation.</p>
+
+  <h2 class="sec-heading">IV. Methodology and Model Architectures</h2>
+  <h3 class="subsec-heading">A. Classical Baseline: TF-IDF + Logistic Regression</h3>
+  <p>As an interpretable non-neural reference, we implement a linear multiclass classifier trained on TF-IDF representations with sublinear word and character n-grams ($n \in [1, 3]$) constrained to the top 10,000 features, optimized via multinomial Logistic Regression ($L_2$ penalty, $C=1.0$).</p>
+
+  <h3 class="subsec-heading">B. Multilingual Transformers (Full Fine-Tuning)</h3>
+  <p>We evaluate mBERT (<code>bert-base-multilingual-cased</code>, 178M parameters) [1] and XLM-RoBERTa (<code>xlm-roberta-base</code>, 278M parameters) [2]. For both architectures, sequence classification heads with dropout ($p=0.1$) and linear projections are affixed to the pooled classification token. All parameters are updated end-to-end via cross-entropy loss.</p>
+
+  <h3 class="subsec-heading">C. Parameter-Efficient Adaptation: LoRA for XLM-RoBERTa</h3>
+  <p>We target the query and value projection layers of all 12 transformer blocks in <code>xlm-roberta-base</code>, setting $r=16$, $\alpha=32$, and LoRA dropout to 0.1. As shown in Table I, this parameterization requires updating only 1,770,757 parameters&mdash;merely 0.63% of the total model capacity. Peak GPU VRAM allocation drops from 5.2 GB to 3.1 GB, enabling faster training and stronger regularization against overfitting.</p>
+
+  <div class="table-caption">TABLE I</div>
+  <div class="table-subcaption">Architectural and Training Parameter Comparison</div>
+  <table class="ieee-table">
+    <thead>
+      <tr>
+        <th style="text-align:left;">Model Architecture</th>
+        <th>Total Params</th>
+        <th>Trainable</th>
+        <th>% Train</th>
+        <th>VRAM</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td style="text-align:left;">TF-IDF + Logistic Reg.</td>
+        <td>10,000</td>
+        <td>10,000</td>
+        <td>100.0%</td>
+        <td>&lt;0.5 GB</td>
+      </tr>
+      <tr>
+        <td style="text-align:left;">mBERT (Full FT)</td>
+        <td>177.85M</td>
+        <td>177.85M</td>
+        <td>100.0%</td>
+        <td>4.8 GB</td>
+      </tr>
+      <tr>
+        <td style="text-align:left;">XLM-RoBERTa (Full FT)</td>
+        <td>278.04M</td>
+        <td>278.04M</td>
+        <td>100.0%</td>
+        <td>5.2 GB</td>
+      </tr>
+      <tr class="bottom-rule">
+        <td style="text-align:left;"><b>XLM-RoBERTa (LoRA)</b></td>
+        <td><b>279.81M</b></td>
+        <td><b>1.77M</b></td>
+        <td><b>0.63%</b></td>
+        <td><b>3.1 GB</b></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3 class="subsec-heading">D. Hyperparameters and Evaluation Setup</h3>
+  <p>All neural models were implemented in PyTorch using Hugging Face <code>transformers</code> and <code>peft</code>. Training was conducted using the AdamW optimizer with a linear learning rate decay schedule and a 10% warmup phase. Maximum token sequence length was set to 128. Batch size was fixed at 32. Full fine-tuning models were trained with $\eta = 2 \times 10^{-5}$, whereas LoRA models were optimized with $\eta = 2 \times 10^{-4}$. Models were trained for up to 5 epochs with early stopping triggered on validation Macro-F1 (patience of 2 epochs). Statistical significance is verified via paired non-parametric bootstrap resampling ($B=1,000$) for 95% confidence intervals and exact McNemar's tests ($p < 0.05$).</p>
+
+  <h2 class="sec-heading">V. Experiments and Empirical Results</h2>
+  <h3 class="subsec-heading">A. Experiment A: Zero-Shot Degradation Across Canonical Noise</h3>
+  <p>In Experiment A, models trained exclusively on clean training data are evaluated across the four canonical severity levels (Clean, Mild, Moderate, Severe). Table II documents the empirical trajectory.</p>
+
+  <div class="table-caption">TABLE II</div>
+  <div class="table-subcaption">Empirical Results Across Canonical Severity Conditions on Test Set ($N=3,519$)</div>
+  <table class="ieee-table">
+    <thead>
+      <tr>
+        <th style="text-align:left;">Model</th>
+        <th>Cond</th>
+        <th>Acc</th>
+        <th>Macro-F1</th>
+        <th>Macro-P</th>
+        <th>Macro-R</th>
+        <th>F1 Drop (%)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="4" style="text-align:left; vertical-align:middle;"><b>TF-IDF<br>+ LR</b></td>
+        <td>Clean</td><td>0.5445</td><td>0.5508</td><td>0.5449</td><td>0.5610</td><td>0.00%</td>
+      </tr>
+      <tr><td>Mild</td><td>0.5087</td><td>0.5135</td><td>0.5087</td><td>0.5218</td><td>6.77%</td></tr>
+      <tr><td>Mod</td><td>0.4908</td><td>0.4924</td><td>0.4883</td><td>0.5012</td><td>10.60%</td></tr>
+      <tr class="mid-rule"><td>Sev</td><td>0.4660</td><td>0.4604</td><td>0.4631</td><td>0.4670</td><td><b>16.42%</b></td></tr>
+      
+      <tr>
+        <td rowspan="4" style="text-align:left; vertical-align:middle;"><b>mBERT<br>(Full FT)</b></td>
+        <td>Clean</td><td>0.5791</td><td>0.5981</td><td>0.6012</td><td>0.5995</td><td>0.00%</td>
+      </tr>
+      <tr><td>Mild</td><td>0.5632</td><td>0.5818</td><td>0.5893</td><td>0.5802</td><td>2.71%</td></tr>
+      <tr><td>Mod</td><td>0.5507</td><td>0.5705</td><td>0.5810</td><td>0.5660</td><td>4.60%</td></tr>
+      <tr class="mid-rule"><td>Sev</td><td>0.5345</td><td>0.5545</td><td>0.5728</td><td>0.5463</td><td><b>7.29%</b></td></tr>
+
+      <tr>
+        <td rowspan="4" style="text-align:left; vertical-align:middle;"><b>XLM-R<br>(Full FT)</b></td>
+        <td>Clean</td><td>0.4856</td><td>0.4838</td><td>0.5215</td><td>0.4794</td><td>0.00%</td>
+      </tr>
+      <tr><td>Mild</td><td>0.4743</td><td>0.4751</td><td>0.5123</td><td>0.4695</td><td>1.81%</td></tr>
+      <tr><td>Mod</td><td>0.4626</td><td>0.4645</td><td>0.5101</td><td>0.4597</td><td>3.99%</td></tr>
+      <tr class="mid-rule"><td>Sev</td><td>0.4515</td><td>0.4499</td><td>0.5126</td><td>0.4477</td><td><b>7.01%</b></td></tr>
+
+      <tr>
+        <td rowspan="4" style="text-align:left; vertical-align:middle;"><b>XLM-R<br>(LoRA)</b></td>
+        <td>Clean</td><td>0.5220</td><td>0.5294</td><td>0.5351</td><td>0.5347</td><td>0.00%</td>
+      </tr>
+      <tr><td>Mild</td><td>0.5126</td><td>0.5197</td><td>0.5296</td><td>0.5234</td><td>1.83%</td></tr>
+      <tr><td>Mod</td><td>0.5078</td><td>0.5157</td><td>0.5256</td><td>0.5197</td><td>2.59%</td></tr>
+      <tr class="bottom-rule"><td>Sev</td><td>0.4964</td><td>0.5046</td><td>0.5143</td><td>0.5072</td><td><b>4.68%</b></td></tr>
+    </tbody>
+  </table>
+
+  <div class="fig-box">
+    <img src="figures/experiment_A_robustness_curves.png" alt="Robustness Curves">
+    <div class="fig-caption"><b>Fig. 1.</b> Accuracy degradation curves across canonical noise severity tiers. XLM-RoBERTa (LoRA) exhibits flatter degradation slope than full fine-tuning.</div>
+  </div>
+
+  <p>The classical TF-IDF baseline suffers acute degradation, dropping 16.42% in Macro-F1 under severe noise. Fully fine-tuned mBERT achieves the highest raw Macro-F1 (0.5981 Clean &rarr; 0.5545 Severe, 7.29% drop). Crucially, comparing XLM-RoBERTa under full fine-tuning versus LoRA reveals that LoRA degrades by only 4.68% (0.5294 &rarr; 0.5046) compared to 7.01% for full fine-tuning&mdash;a relative advantage of 33.2% lower degradation ($p < 0.01$ via bootstrap resampling).</p>
+
+  <h3 class="subsec-heading">B. Factorial Grid Analysis: Disentangling Density vs. Distance</h3>
+  <p>A two-way ANOVA across the 3&times;3 factorial grid (Table III) demonstrates that <b>substitution density accounts for 82.4%</b> of the total variance in classification degradation ($F=142.6, p < 10^{-6}$), whereas character edit distance accounts for 14.1% ($F=24.3, p < 10^{-4}$), with minimal interaction effect (3.5%). Token error frequency impacts semantic comprehension far more heavily than individual typographical divergence.</p>
+
+  <div class="table-caption">TABLE III</div>
+  <div class="table-subcaption">3&times;3 Factorial Grid Evaluation (Macro-F1 / Accuracy)</div>
+  <table class="ieee-table">
+    <thead>
+      <tr>
+        <th>Subst. Rate</th>
+        <th>Distance</th>
+        <th>TF-IDF + LR</th>
+        <th>mBERT (Full)</th>
+        <th>XLM-R (LoRA)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td rowspan="3">25%</td><td>Low</td><td>0.5146 / 0.5095</td><td>0.5833 / 0.5647</td><td>0.5204 / 0.5132</td></tr>
+      <tr><td>Random</td><td>0.5135 / 0.5087</td><td>0.5818 / 0.5632</td><td>0.5197 / 0.5126</td></tr>
+      <tr class="mid-rule"><td>High</td><td>0.5098 / 0.5055</td><td>0.5794 / 0.5612</td><td>0.5178 / 0.5112</td></tr>
+      
+      <tr><td rowspan="3">50%</td><td>Low</td><td>0.4951 / 0.4936</td><td>0.5721 / 0.5524</td><td>0.5168 / 0.5092</td></tr>
+      <tr><td>Random</td><td>0.4924 / 0.4908</td><td>0.5705 / 0.5507</td><td>0.5157 / 0.5078</td></tr>
+      <tr class="mid-rule"><td>High</td><td>0.4862 / 0.4842</td><td>0.5662 / 0.5467</td><td>0.5113 / 0.5038</td></tr>
+
+      <tr><td rowspan="3">90%</td><td>Low</td><td>0.4682 / 0.4726</td><td>0.5581 / 0.5379</td><td>0.5074 / 0.4993</td></tr>
+      <tr><td>Random</td><td>0.4604 / 0.4660</td><td>0.5545 / 0.5345</td><td>0.5046 / 0.4964</td></tr>
+      <tr class="bottom-rule"><td>High</td><td>0.4512 / 0.4578</td><td>0.5487 / 0.5297</td><td>0.4989 / 0.4905</td></tr>
+    </tbody>
+  </table>
+
+  <div class="fig-box">
+    <img src="figures/experiment_A_factorial_heatmap.png" alt="Factorial Heatmap">
+    <div class="fig-caption"><b>Fig. 2.</b> Factorial ANOVA response heatmap separating substitution rate from edit distance.</div>
+  </div>
+
+  <h3 class="subsec-heading">C. Experiment B: Resilience via Robust Data Augmentation</h3>
+  <p>In Experiment B, training with 50% synthetic authentic variant augmentation ($N=24,630$) provides effective regularization for LoRA. As summarized in Table IV, clean Macro-F1 increases from 0.5294 to <b>0.5502</b>, while severe noise Macro-F1 rises from 0.5046 to <b>0.5232</b> (+1.86 points). For TF-IDF, severe noise Macro-F1 recovers from 0.4604 to 0.4987 (+3.83 points).</p>
+
+  <div class="table-caption">TABLE IV</div>
+  <div class="table-subcaption">Experiment B: Augmented vs. Clean Training Comparison (Macro-F1)</div>
+  <table class="ieee-table">
+    <thead>
+      <tr>
+        <th style="text-align:left;">Model</th>
+        <th>Regime</th>
+        <th>Clean</th>
+        <th>Mild</th>
+        <th>Mod</th>
+        <th>Sev</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="2" style="text-align:left;">TF-IDF + LR</td>
+        <td>Clean-Only</td><td>0.5508</td><td>0.5135</td><td>0.4924</td><td>0.4604</td>
+      </tr>
+      <tr class="mid-rule"><td>Augmented</td><td>0.5464</td><td>0.5287</td><td>0.5120</td><td>0.4987</td></tr>
+      <tr>
+        <td rowspan="2" style="text-align:left;">XLM-R (LoRA)</td>
+        <td>Clean-Only</td><td>0.5294</td><td>0.5197</td><td>0.5157</td><td>0.5046</td>
+      </tr>
+      <tr class="bottom-rule"><td><b>Augmented</b></td><td><b>0.5502</b></td><td><b>0.5413</b></td><td><b>0.5336</b></td><td><b>0.5232</b></td></tr>
+    </tbody>
+  </table>
+
+  <h3 class="subsec-heading">D. Experiment C: Normalization Recovery and Density Predictability</h3>
+  <p>We evaluate four inference preprocessing pipelines applied to severe noise inputs: <i>Condition A (Raw)</i>, <i>Condition B (Generic Preprocessing)</i>, <i>Condition C (Lexicon Normalization)</i>, and <i>Condition D (Combined)</i>.</p>
+
+  <div class="table-caption">TABLE V</div>
+  <div class="table-subcaption">Experiment C: Normalization Ablation Under Severe Noise</div>
+  <table class="ieee-table">
+    <thead>
+      <tr>
+        <th style="text-align:left;">Model</th>
+        <th style="text-align:left;">Pipeline Condition</th>
+        <th>Acc</th>
+        <th>Macro-F1</th>
+        <th>% Recovered</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td rowspan="4" style="text-align:left; vertical-align:middle;">TF-IDF + LR</td>
+        <td style="text-align:left;">Cond A: Raw</td><td>0.4660</td><td>0.4604</td><td>0.0%</td>
+      </tr>
+      <tr><td style="text-align:left;">Cond B: Generic</td><td>0.4658</td><td>0.4593</td><td><b>0.0% (-1.2%)</b></td></tr>
+      <tr><td style="text-align:left;">Cond C: Lexicon</td><td>0.5374</td><td>0.5452</td><td><b>93.79%</b></td></tr>
+      <tr class="mid-rule"><td style="text-align:left;">Cond D: Combined</td><td>0.5320</td><td>0.5374</td><td>85.17%</td></tr>
+
+      <tr>
+        <td rowspan="4" style="text-align:left; vertical-align:middle;">XLM-R (LoRA)</td>
+        <td style="text-align:left;">Cond A: Raw</td><td>0.4964</td><td>0.5047</td><td>0.0%</td>
+      </tr>
+      <tr><td style="text-align:left;">Cond B: Generic</td><td>0.4933</td><td>0.5006</td><td><b>0.0% (-16.1%)</b></td></tr>
+      <tr><td style="text-align:left;">Cond C: Lexicon</td><td>0.5183</td><td>0.5259</td><td><b>84.23%</b></td></tr>
+      <tr class="bottom-rule"><td style="text-align:left;">Cond D: Combined</td><td>0.5163</td><td>0.5252</td><td>81.55%</td></tr>
+    </tbody>
+  </table>
+
+  <div class="fig-box">
+    <img src="figures/experiment_C_normalization_recovery.png" alt="Normalization Recovery">
+    <div class="fig-caption"><b>Fig. 3.</b> Percentage of degradation recovered across preprocessing conditions. Lexicon normalization recovers 84–94%, while generic preprocessing fails completely.</div>
+  </div>
+
+  <p>The ablation results in Table V confirm that generic preprocessing yields <b>0.0% recovery</b> (-0.001 to -0.004 F1 drop). In contrast, research-specific Lexicon Normalization recovers <b>93.79%</b> of TF-IDF degradation and <b>84.23%</b> of LoRA degradation.</p>
+
+  <h3 class="subsec-heading">E. Cross-Domain External Validation on Daraz.pk (RUECD)</h3>
+  <p>To verify domain generalizability, zero-shot evaluation on 3,000 independent Daraz.pk reviews [7] confirmed that performance degraded monotonically from 0.4972 to 0.4624 for TF-IDF and from 0.4959 to 0.4674 for LoRA, replicating the benchmark findings.</p>
+
+  <h2 class="sec-heading">VI. Discussion and Error Analysis</h2>
+  <h3 class="subsec-heading">A. Why LoRA Outperforms Full Fine-Tuning in Robustness</h3>
+  <p>In full fine-tuning, all 278 million parameters of XLM-RoBERTa are updated. When exposed to a training corpus containing specific canonical spelling realizations, full backpropagation allows weights in early layers to over-specialize to exact surface forms. In contrast, LoRA freezes underlying representations ($W_0$) and restricts all adaptation to rank-$r$ bottleneck matrices ($r=16$). This constraint prevents catastrophic perturbation of the pre-trained multilingual manifold. When an unseen spelling variant appears during inference, the frozen base model maps the subword composition into a semantically coherent region of the latent space.</p>
+
+  <h3 class="subsec-heading">B. Confusion Matrix and Error Boundary Shifts</h3>
+  <p>The error analysis of confusion matrices across Clean and Severe conditions (Fig. 4) reveals three prominent patterns:</p>
+  
+  <div class="fig-box">
+    <div style="display:flex; justify-content:center; gap:8px;">
+      <div style="flex:1;"><img src="figures/cm_xlm_roberta_lora_clean.png" alt="CM Clean"><br><span style="font-size:7.5pt;">(a) LoRA (Clean)</span></div>
+      <div style="flex:1;"><img src="figures/cm_xlm_roberta_lora_severe.png" alt="CM Severe"><br><span style="font-size:7.5pt;">(b) LoRA (Severe)</span></div>
+    </div>
+    <div class="fig-caption"><b>Fig. 4.</b> Confusion matrices for XLM-RoBERTa (LoRA) on Clean vs. Severe test sets. Severe noise drives systematic regression to the neutral class.</div>
+  </div>
+
+  <p><b>1) Regression to the Neutral Class:</b> Under severe orthographic perturbation, misclassifications do not scatter randomly across polarities. Both Positive and Negative predictions migrate into the Neutral class as fragmented tokens lose semantic salience.</p>
+  <p><b>2) Extreme Polarity Blurring:</b> Boundaries between extreme and moderate classes (Very Positive vs. Positive, Very Negative vs. Negative) collapse as intensifiers (e.g., <i>nihayat</i>) are corrupted.</p>
+  <p><b>3) Negation Inversion:</b> Corruption of short function words (e.g., <i>nhn</i>) causes attention heads to miss negation operators, flipping negative reviews to positive.</p>
+
+  <h3 class="subsec-heading">C. Practical Guidelines</h3>
+  <p>Our findings establish: (1) <i>Abandon Generic Preprocessing:</i> Stripping punctuation and stopwords yields zero recovery. (2) <i>Adopt Lexicon Normalization:</i> Inverting variant dictionaries recovers over 84%–94% of performance loss. (3) <i>Prioritize LoRA:</i> Slashes GPU memory footprints by 40% while conferring superior regularized robustness.</p>
+
+  <h2 class="sec-heading">VII. Conclusion and Future Work</h2>
+  <p>In this paper, we conducted the first rigorous investigation into Roman Urdu sentiment classification robustness under authentic spelling variations. Parameter-efficient adaptation via LoRA demonstrated remarkable resilience, suffering only a 4.68% relative Macro-F1 drop under severe noise compared to 7.01% for full fine-tuning and 16.42% for TF-IDF. Furthermore, lexicon-driven normalization recovered 84.23%–93.79% of lost performance, whereas generic preprocessing failed completely. Findings replicated consistently across 3,000 independent reviews from the Daraz.pk e-commerce corpus. In future work, we plan to extend this evaluation framework to phonetic embedding alignments across South Asian dialects.</p>
+
+  <h2 class="sec-heading">References</h2>
+  <ul class="references-list">
+    <li>[1] J. Devlin, M.-W. Chang, K. Lee, and K. Toutanova, &ldquo;BERT: Pre-training of deep bidirectional transformers for language understanding,&rdquo; in <i>Proc. NAACL</i>, 2019, pp. 4171–4186.</li>
+    <li>[2] A. Conneau, K. Khandelwal, N. Goyal, V. Chaudhary, G. Wenzek, F. Guzm&aacute;n, E. Grave, M. Ott, L. Zettlemoyer, and V. Stoyanov, &ldquo;Unsupervised cross-lingual representation learning at scale,&rdquo; in <i>Proc. ACL</i>, 2020, pp. 8440–8451.</li>
+    <li>[3] M. K. Nazir, C. M. N. Faisal, M. A. Habib, and H. Ahmad, &ldquo;Leveraging multilingual transformer for multiclass sentiment analysis in code-mixed data of low-resource languages,&rdquo; <i>IEEE Access</i>, vol. 13, pp. 7538–7554, 2025.</li>
+    <li>[4] M. Khan, A. Asif, M. A. Khan, S. Latif, and M. Fatima, &ldquo;ROMEVA: Geometry-preserving vocabulary expansion for Roman Urdu language models,&rdquo; <i>arXiv preprint arXiv:2606.22478</i>, 2026.</li>
+    <li>[5] E. J. Hu, Y. Shen, P. Wallis, Z. Allen-Zhu, Y. Li, S. Wang, L. Wang, and W. Chen, &ldquo;LoRA: Low-Rank Adaptation of Large Language Models,&rdquo; in <i>Proc. ICLR</i>, 2022.</li>
+    <li>[6] M. Ahmed, &ldquo;Roman Urdu word variations and normalized sentiment review dataset (RUWV-NSR),&rdquo; <i>Mendeley Data</i>, V5, 2024. [Online]. doi: 10.17632/v5jfhsvtmd.5</li>
+    <li>[7] B. Chandio, A. Shaikh, M. Bakhtyar, M. Alrizq, J. Baber, A. Sulaiman, A. Rajab, and W. Noor, &ldquo;Sentiment analysis of Roman Urdu on e-commerce reviews using machine learning,&rdquo; <i>Computer Modeling in Engineering & Sciences</i>, vol. 131, no. 3, pp. 1263–1287, 2022.</li>
+    <li>[8] M. Moradi and M. Samwald, &ldquo;Evaluating the robustness of neural language models to input perturbations,&rdquo; in <i>Proc. EMNLP</i>, 2021, pp. 1558–1570.</li>
+    <li>[9] B. Efron, &ldquo;Bootstrap methods: another look at the jackknife,&rdquo; in <i>Breakthroughs in Statistics</i>, Springer, 1992, pp. 569–593.</li>
+    <li>[10] Q. McNemar, &ldquo;Note on the sampling error of the difference between correlated proportions or percentages,&rdquo; <i>Psychometrika</i>, vol. 12, no. 2, pp. 153–157, 1947.</li>
+  </ul>
+
+</div>
+
+</body>
+</html>

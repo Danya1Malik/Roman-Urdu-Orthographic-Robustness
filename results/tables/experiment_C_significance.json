@@ -1,0 +1,42 @@
+{
+  "TF-IDF + LR_generic_vs_lexicon": {
+    "f1_a": 0.5451971294742975,
+    "f1_b": 0.459298780389947,
+    "delta": 0.08589834908435057,
+    "ci_95_lower": 0.06947944189702214,
+    "ci_95_upper": 0.10284045209076922,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "TF-IDF + LR_raw_vs_combined": {
+    "f1_a": 0.5373965573427661,
+    "f1_b": 0.4603601027652896,
+    "delta": 0.07703645457747654,
+    "ci_95_lower": 0.06132836648098111,
+    "ci_95_upper": 0.09342006343603242,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "XLM-RoBERTa (LoRA)_generic_vs_lexicon": {
+    "f1_a": 0.5259002163818318,
+    "f1_b": 0.5006133111230089,
+    "delta": 0.025286905258822934,
+    "ci_95_lower": 0.01033334580043963,
+    "ci_95_upper": 0.039307292085783145,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "XLM-RoBERTa (LoRA)_raw_vs_combined": {
+    "f1_a": 0.5252229340943779,
+    "f1_b": 0.50465199590857,
+    "delta": 0.020570938185807908,
+    "ci_95_lower": 0.005950251057384551,
+    "ci_95_upper": 0.034593736254800334,
+    "p_value": 0.006,
+    "significant_p05": true,
+    "significant_p01": true
+  }
+}

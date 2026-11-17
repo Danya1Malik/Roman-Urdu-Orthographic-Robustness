@@ -1,0 +1,54 @@
+{
+  "random_state": 42,
+  "total_records": 23458,
+  "train_records": 16420,
+  "val_records": 3519,
+  "test_records": 3519,
+  "class_distributions": [
+    {
+      "Class": "very negative",
+      "Train_Count": 1809,
+      "Train_Pct": 11.02,
+      "Val_Count": 388,
+      "Val_Pct": 11.03,
+      "Test_Count": 388,
+      "Test_Pct": 11.03
+    },
+    {
+      "Class": "negative",
+      "Train_Count": 4012,
+      "Train_Pct": 24.43,
+      "Val_Count": 859,
+      "Val_Pct": 24.41,
+      "Test_Count": 860,
+      "Test_Pct": 24.44
+    },
+    {
+      "Class": "neutral",
+      "Train_Count": 4246,
+      "Train_Pct": 25.86,
+      "Val_Count": 910,
+      "Val_Pct": 25.86,
+      "Test_Count": 910,
+      "Test_Pct": 25.86
+    },
+    {
+      "Class": "positive",
+      "Train_Count": 4142,
+      "Train_Pct": 25.23,
+      "Val_Count": 888,
+      "Val_Pct": 25.23,
+      "Test_Count": 887,
+      "Test_Pct": 25.21
+    },
+    {
+      "Class": "very positive",
+      "Train_Count": 2211,
+      "Train_Pct": 13.47,
+      "Val_Count": 474,
+      "Val_Pct": 13.47,
+      "Test_Count": 474,
+      "Test_Pct": 13.47
+    }
+  ]
+}

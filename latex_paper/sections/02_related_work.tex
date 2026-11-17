@@ -1,0 +1,24 @@
+\section{Related Work}
+\label{sec:related_work}
+
+The literature intersecting this research encompasses two dominant trajectories: multiclass sentiment classification in code-mixed and Romanized low-resource languages, and transformer robustness under adversarial or natural orthographic perturbation.
+
+\subsection{Multiclass Sentiment Classification in Roman Urdu}
+Early computational investigations in Roman Urdu sentiment analysis relied heavily on surface-level feature engineering, employing Bag-of-Words (BoW) representations, character n-grams, and classical machine learning estimators such as Support Vector Machines (SVM), Naive Bayes, and Random Forests~\cite{chandio2022sentiment}. While character n-grams partially alleviate minor typing slips by capturing sub-word substrings, classical estimators are fundamentally incapable of modeling long-range syntactic dependencies, negation scope, and polysemy.
+
+The introduction of multilingual pre-trained encoders catalyzed significant progress. Devlin et al.~\cite{devlin2019bert} established the efficacy of multilingual BERT (mBERT), pre-trained across 104 languages on Wikipedia corpora. Conneau et al.~\cite{conneau2020unsupervised} subsequently introduced XLM-RoBERTa (XLM-R), trained on 2.5TB of filtered CommonCrawl data in 100 languages, demonstrating substantial performance advantages in cross-lingual transfer benchmarks. 
+
+In a notable recent study, Nazir et al.~\cite{nazir2025leveraging} proposed CMSA-mBERT for three-class sentiment analysis across 48,324 Roman Urdu and Roman Punjabi code-mixed reviews. Their model achieved a benchmark accuracy of 79.94\%, outperforming traditional ML and recurrent architectures (LSTM, BiLSTM, GRU). Crucially, the authors observed that standard preprocessing techniques (stripping stopwords, punctuation, and emojis) produced only an insubstantial 2.71\% improvement, citing unstandardized Romanized orthography as an intractable limitation. However, their experimental design was restricted to a single clean 80/20 train/test split, leaving the models' resilience to spelling noise untested.
+
+\subsection{Vocabulary Adaptation and Embedding Stability}
+Multilingual language models typically suffer from representation degradation when applied to languages absent from their pre-training corpora. Because Roman Urdu is underrepresented in mBERT and XLM-RoBERTa, native words are fragmented into highly localized subword units. 
+
+Addressing this phenomenon, Khan et al.~\cite{khan2026romeva} introduced ROMEVA, an anchor-loss vocabulary expansion technique designed to preserve embedding-space geometry when adapting mBERT to Roman Urdu using the RUWV-NSR dataset~\cite{ahmed2024ruwvnsr}. Their findings indicated that while unconstrained naive fine-tuning disrupted the pre-trained semantic geometry more severely than constrained methods, it paradoxically achieved superior downstream classification accuracy. Nevertheless, Khan et al. focused exclusively on embedding drift rather than input-level orthographic perturbation, did not evaluate parameter-efficient tuning paradigms, and evaluated solely on unaltered review splits.
+
+\subsection{Robustness and Perturbation Evaluation}
+Assessing the brittle nature of deep neural language models under input perturbations is an active subfield. Moradi and Samwald~\cite{moradi2021evaluating} systematically evaluated transformer architectures under synthetic character-level noises (random character insertion, deletion, and swap), finding severe degradation across standard benchmarks.
+
+However, existing perturbation benchmarks predominantly introduce synthetic typographic noise (e.g., keyboard layout typos) rather than authentic, sociolinguistically validated spelling variations. In Roman Urdu, spelling variation is not random noise but a structured phonological phenomenon. By leveraging an authentic, human-documented variation lexicon, our work provides the first controlled robustness benchmark for Roman Urdu sentiment classification.
+
+\subsection{Parameter-Efficient Fine-Tuning (PEFT)}
+As language models have scaled, parameter-efficient adaptation methods have emerged as powerful alternatives to full fine-tuning. Hu et al.~\cite{hu2022lora} introduced Low-Rank Adaptation (LoRA), which freezes the pre-trained backbone weights $W_0 \in \mathbb{R}^{d \times k}$ and injects trainable rank-decomposition matrices $\Delta W = B \cdot A$, where $B \in \mathbb{R}^{d \times r}$, $A \in \mathbb{R}^{r \times k}$, and rank $r \ll \min(d, k)$. Beyond drastically reducing trainable parameters and GPU memory overhead, recent theoretical insights suggest that constraining updates to low-rank subspaces acts as implicit regularization, mitigating catastrophic forgetting of pre-trained linguistic priors. In this paper, we hypothesize that this regularization makes LoRA inherently more resilient to input orthographic shifts than full parameter updates.

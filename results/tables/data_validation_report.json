@@ -1,0 +1,63 @@
+{
+  "reviews_validation": {
+    "initial_record_count": 28090,
+    "initial_column_count": 3,
+    "raw_sentiment_distribution": {
+      "neutral": 6445,
+      "very positive": 5008,
+      "Positive": 4548,
+      "very negative": 4313,
+      "Negative": 3975,
+      "negative": 2060,
+      "positive": 1740,
+      "Neative": 1
+    },
+    "cleaned_raw_sentiment_distribution": {
+      "neutral": 6445,
+      "positive": 6288,
+      "negative": 6036,
+      "very positive": 5008,
+      "very negative": 4313
+    },
+    "duplicate_review_texts": 4632,
+    "duplicate_all_columns": 1268,
+    "conflicting_sentiment_reviews": 48,
+    "deduplicated_record_count": 23458,
+    "deduplicated_sentiment_distribution": {
+      "neutral": 6066,
+      "positive": 5917,
+      "negative": 5731,
+      "very positive": 3159,
+      "very negative": 2585
+    },
+    "deduplicated_sentiment_proportions": {
+      "neutral": 25.86,
+      "positive": 25.22,
+      "negative": 24.43,
+      "very positive": 13.47,
+      "very negative": 11.02
+    }
+  },
+  "lexicon_validation": {
+    "headword_count": 5219,
+    "columns": [
+      "var-1",
+      "var-2",
+      "var-3",
+      "var-4",
+      "var-5",
+      "Common",
+      "English Translated",
+      "num_recorded_variants"
+    ],
+    "variant_count_distribution": {
+      "1": 375,
+      "2": 1591,
+      "3": 1440,
+      "4": 869,
+      "5": 944
+    },
+    "unique_tokens_total": 16077,
+    "non_identical_variant_pairs": 10869
+  }
+}

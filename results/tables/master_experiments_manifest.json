@@ -1,0 +1,17 @@
+{
+  "execution_time_minutes": 0.3539827307065328,
+  "completed_experiments": [
+    "Experiment A",
+    "Experiment B",
+    "Experiment C",
+    "External Validation"
+  ],
+  "tables_generated": [
+    "experiment_A_canonical_results.csv",
+    "experiment_A_factorial_grid.csv",
+    "experiment_B_augmented_comparison.csv",
+    "experiment_C_normalization_results.csv",
+    "experiment_C_density_analysis.csv",
+    "external_validation_ruecd_results.csv"
+  ]
+}

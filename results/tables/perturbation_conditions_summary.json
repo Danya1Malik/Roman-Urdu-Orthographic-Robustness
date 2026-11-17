@@ -1,0 +1,119 @@
+[
+  {
+    "condition": "clean",
+    "target_rate": 0.0,
+    "distance_strategy": "none",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.0,
+    "mean_edit_distance": 0.0,
+    "total_perturbed_tokens": 0
+  },
+  {
+    "condition": "mild",
+    "target_rate": 0.2,
+    "distance_strategy": "low",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.28389273273173404,
+    "mean_edit_distance": 1.0611246907725365,
+    "total_perturbed_tokens": 5988
+  },
+  {
+    "condition": "moderate",
+    "target_rate": 0.5,
+    "distance_strategy": "random",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.5040654826607267,
+    "mean_edit_distance": 1.328475482608336,
+    "total_perturbed_tokens": 13827
+  },
+  {
+    "condition": "severe",
+    "target_rate": 0.85,
+    "distance_strategy": "high",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.7999655837710747,
+    "mean_edit_distance": 1.6738097466248976,
+    "total_perturbed_tokens": 23167
+  },
+  {
+    "condition": "grid_rate25_low",
+    "target_rate": 0.25,
+    "distance_strategy": "low",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.31645821819276654,
+    "mean_edit_distance": 1.0602825448287367,
+    "total_perturbed_tokens": 7286
+  },
+  {
+    "condition": "grid_rate25_random",
+    "target_rate": 0.25,
+    "distance_strategy": "random",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.31645821819276654,
+    "mean_edit_distance": 1.3247043904002294,
+    "total_perturbed_tokens": 7286
+  },
+  {
+    "condition": "grid_rate25_high",
+    "target_rate": 0.25,
+    "distance_strategy": "high",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.31645821819276654,
+    "mean_edit_distance": 1.674865964480696,
+    "total_perturbed_tokens": 7286
+  },
+  {
+    "condition": "grid_rate50_low",
+    "target_rate": 0.5,
+    "distance_strategy": "low",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.5040654826607267,
+    "mean_edit_distance": 1.059807630324529,
+    "total_perturbed_tokens": 13827
+  },
+  {
+    "condition": "grid_rate50_random",
+    "target_rate": 0.5,
+    "distance_strategy": "random",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.5040654826607267,
+    "mean_edit_distance": 1.328475482608336,
+    "total_perturbed_tokens": 13827
+  },
+  {
+    "condition": "grid_rate50_high",
+    "target_rate": 0.5,
+    "distance_strategy": "high",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.5040654826607267,
+    "mean_edit_distance": 1.6769209107445826,
+    "total_perturbed_tokens": 13827
+  },
+  {
+    "condition": "grid_rate90_low",
+    "target_rate": 0.9,
+    "distance_strategy": "low",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.8395383940282476,
+    "mean_edit_distance": 1.0600803186220304,
+    "total_perturbed_tokens": 24496
+  },
+  {
+    "condition": "grid_rate90_random",
+    "target_rate": 0.9,
+    "distance_strategy": "random",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.8395383940282476,
+    "mean_edit_distance": 1.3238632426844998,
+    "total_perturbed_tokens": 24496
+  },
+  {
+    "condition": "grid_rate90_high",
+    "target_rate": 0.9,
+    "distance_strategy": "high",
+    "total_reviews": 3519,
+    "mean_actual_rate": 0.8395383940282476,
+    "mean_edit_distance": 1.6737260022903664,
+    "total_perturbed_tokens": 24496
+  }
+]

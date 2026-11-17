@@ -1,0 +1,49 @@
+{
+  "xlmr_full_vs_lora_clean": {
+    "f1_a": 0.48380444533840816,
+    "f1_b": 0.5293876585106958,
+    "delta": -0.04558321317228764,
+    "ci_95_lower": -0.060568954848686844,
+    "ci_95_upper": -0.03019762401254731,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "xlmr_full_vs_lora_severe": {
+    "f1_a": 0.44987963603388137,
+    "f1_b": 0.5045903949985386,
+    "delta": -0.05471075896465727,
+    "ci_95_lower": -0.07067937335512986,
+    "ci_95_upper": -0.03711732100084016,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "mcnemar_xlmr_full_vs_lora_severe": {
+    "chi2": 29.913834951456312,
+    "p_value": 4.516783989065563e-08,
+    "n01": 491,
+    "n10": 333,
+    "significant": true
+  },
+  "xlmr_full_clean_vs_severe": {
+    "f1_a": 0.48380444533840816,
+    "f1_b": 0.44987963603388137,
+    "delta": 0.03392480930452679,
+    "ci_95_lower": 0.02104899310294024,
+    "ci_95_upper": 0.047428694677755574,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "xlmr_lora_clean_vs_severe": {
+    "f1_a": 0.5293876585106958,
+    "f1_b": 0.5045903949985386,
+    "delta": 0.024797263512157164,
+    "ci_95_lower": 0.009636224899417034,
+    "ci_95_upper": 0.03919258010679988,
+    "p_value": 0.001,
+    "significant_p05": true,
+    "significant_p01": true
+  }
+}

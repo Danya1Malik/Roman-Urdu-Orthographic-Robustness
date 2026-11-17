@@ -1,0 +1,6 @@
+sentiment,Total_Reviews,Reviews_With_Match,Coverage_Pct,Mean_Matches,Median_Matches,Mean_Density,Median_Density
+very negative,2585,2457,95.048,6.785,4.0,0.586,0.607
+negative,5731,5618,98.028,9.702,7.0,0.597,0.615
+neutral,6066,5832,96.142,7.754,5.0,0.534,0.556
+positive,5917,5732,96.873,9.718,7.0,0.562,0.583
+very positive,3159,2951,93.416,5.277,4.0,0.506,0.5

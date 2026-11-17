@@ -1,0 +1,6 @@
+Class,Train_Count,Train_Pct,Val_Count,Val_Pct,Test_Count,Test_Pct
+very negative,1809,11.02,388,11.03,388,11.03
+negative,4012,24.43,859,24.41,860,24.44
+neutral,4246,25.86,910,25.86,910,25.86
+positive,4142,25.23,888,25.23,887,25.21
+very positive,2211,13.47,474,13.47,474,13.47

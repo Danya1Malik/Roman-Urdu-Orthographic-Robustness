@@ -1,0 +1,10 @@
+{
+  "ruecd_total": 26824,
+  "ruecd_sentiment_counts": {
+    "positive": 9833,
+    "neutral": 8739,
+    "negative": 8252
+  },
+  "overlap_count": 656,
+  "overlap_pct": 2.445571130331047
+}

@@ -1,0 +1,37 @@
+\section{Data Pipeline and Orthographic Perturbation}
+\label{sec:data_pipeline}
+
+\subsection{Data Audit, Inconsistency Resolution, and Deduplication}
+Our primary experimental benchmark is constructed from the Roman Urdu Word Variations and Normalized Sentiment Review Dataset (RUWV-NSR)~\cite{ahmed2024ruwvnsr}, acquired from Mendeley Data under a CC BY 4.0 license. The corpus comprises 28,090 reviews collected across seven online domains alongside a dedicated Roman Urdu spelling-variation lexicon containing 5,244 headwords.
+
+Prior to modeling, we performed an independent data audit that revealed critical anomalies necessitating rigorous data engineering:
+\begin{enumerate}
+    \item \textbf{Label Inconsistency and Typos:} Target annotations were distributed across eight conflicting string representations due to casing disparities and lexical errors (e.g., \texttt{"Neative"}). We canonicalized these into five balanced classes: \textit{very positive} ($N=5,008$), \textit{positive} ($N=6,288$), \textit{neutral} ($N=6,445$), \textit{negative} ($N=6,036$), and \textit{very negative} ($N=4,313$).
+    \item \textbf{Severe Duplication and Label Contradiction:} We detected 4,632 exact duplicate reviews (16.49\% of the raw corpus). Crucially, a subset of identical textual reviews was annotated with conflicting sentiment labels across different collection runs. Retaining duplicated instances introduces direct data leakage across train/test splits and artificially inflates cross-validation metrics. Eliminating duplicates reduced the corpus to 23,458 pristine, unique reviews.
+\end{enumerate}
+
+\subsection{Lexicon Processing and Inversion}
+The RUWV-NSR lexicon documents 5,219 unique headwords paired with up to five attested spelling variations. To enable rapid, deterministic perturbation and normalization, we inverted the lexicon structure into a lookup hash table mapping each authentic variant $v$ back to its canonical form $c$, computing its normalized Levenshtein edit distance as:
+\begin{equation}
+    d_{\text{norm}}(c, v) = \frac{\text{Levenshtein}(c, v)}{\max(|c|, |v|)}
+\end{equation}
+This yielded 10,869 authentic lexical variant pairs with an average Levenshtein distance of 1.76 characters.
+
+\subsection{Leakage-Free Stratified Partitioning}
+To prevent distributional bias, the deduplicated dataset ($N=23,458$) was partitioned using stratified sampling (random seed 42) into:
+\begin{itemize}
+    \item \textbf{Training Set (70\%):} 16,420 reviews
+    \item \textbf{Validation Set (15\%):} 3,519 reviews
+    \item \textbf{Test Set (15\%):} 3,519 reviews
+\end{itemize}
+The class distribution was precisely preserved across all splits: Neutral ($\approx 25.9\%$), Positive ($\approx 25.2\%$), Negative ($\approx 24.4\%$), Very Positive ($\approx 13.5\%$), and Very Negative ($\approx 11.0\%$).
+
+\subsection{Controlled Perturbation Engine}
+To evaluate model degradation without label drift, we engineered an authentic variant substitution engine operating strictly on the test partition ($N=3,519$). Sentences are tokenized, and each token matching a canonical headword $c \in \mathcal{L}$ is eligible for substitution with probability $p_{\text{sub}}$. When selected, the token is substituted with an authentic variant $v \in \mathcal{V}(c)$ selected according to edit-distance criteria:
+\begin{enumerate}
+    \item \textbf{Canonical Severity Conditions:} Four standardized tiers were operationalized: \textit{Clean} ($p_{\text{sub}} = 0\%$), \textit{Mild} ($p_{\text{sub}} = 20\%$), \textit{Moderate} ($p_{\text{sub}} = 50\%$), and \textit{Severe} ($p_{\text{sub}} = 85\%$). Across the 3,519 test instances, the average realized substitution rates were 0.0\%, 28.4\%, 50.4\%, and 80.0\% respectively, with the number of modified words per review rising monotonically from 0.00 (Clean) to 1.72 (Mild), 3.42 (Moderate), and 6.13 (Severe).
+    \item \textbf{$3 \times 3$ Factorial Grid Design:} To disentangle word substitution density from character edit distance, we constructed a $3 \times 3$ factorial grid crossing word substitution density $p_{\text{sub}} \in \{25\%, 50\%, 90\%\}$ with variant selection policies: \textit{Low Distance} ($\min_{v} d(c,v)$), \textit{Random Distance} (uniform sampling), and \textit{High Distance} ($\max_{v} d(c,v)$). This yielded nine independently generated test distributions.
+\end{enumerate}
+
+\subsection{Subword Fragmentation and Fertility Profiling}
+A primary theoretical driver of transformer brittleness is vocabulary mismatch. When a word is altered, its subword decomposition can fragment dramatically. Defining token fertility ratio as $\phi(c, v) = |\mathcal{T}(v)| / |\mathcal{T}(c)|$ across the 10,869 variant pairs, our empirical profiling demonstrates that for mBERT (WordPiece, 119K vocabulary), canonical words average 2.47 subword tokens while variant spellings average 2.60 tokens, with 24.3\% of pairs exhibiting increased fragmentation (mean increase of $+0.12$ tokens). For XLM-RoBERTa (SentencePiece/BPE~\cite{kudo2018sentencepiece}, 250K vocabulary), canonical words average 2.28 tokens while variant spellings average 2.45 tokens, with 27.5\% of pairs exhibiting increased fragmentation (mean increase of $+0.17$ tokens). Although XLM-RoBERTa's larger vocabulary yields fewer absolute subwords per token, its proportional fragmentation under perturbation is slightly higher than mBERT's. This indicates that tokenization geometry alone does not fully explain the robustness advantage observed for LoRA-adapted XLM-RoBERTa, pointing instead to the regularization properties of low-rank adaptation as the primary driver.

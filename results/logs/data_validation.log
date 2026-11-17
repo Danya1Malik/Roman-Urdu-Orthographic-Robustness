@@ -1,0 +1,48 @@
+2026-11-17 12:58:58,716 [INFO] Loading raw reviews dataset from: C:\Users\Daama\Desktop\DSTT PROJECT\Dataset\Roman Urdu reviews Dataset with English translation.csv
+2026-11-17 12:58:58,786 [INFO] Successfully loaded raw reviews with encoding='latin-1', shape=(28090, 3)
+2026-11-17 12:58:58,786 [INFO] Loading raw spelling variation lexicon from: C:\Users\Daama\Desktop\DSTT PROJECT\Dataset\Roman Urdu words and English Translation with spelling variation.csv
+2026-11-17 12:58:58,796 [INFO] Successfully loaded lexicon, shape=(5219, 7)
+2026-11-17 12:58:58,808 [INFO] --- Validating and Cleaning Reviews Dataset ---
+2026-11-17 12:58:58,809 [INFO] Initial columns: ['ROMAN URDU REVIEWS', 'TRANSLATED IN ENGLISH ', 'SENTIMENT']
+2026-11-17 12:58:58,810 [INFO] Raw sentiment counts (distinct string forms):
+{
+  "neutral": 6445,
+  "very positive": 5008,
+  "Positive": 4548,
+  "very negative": 4313,
+  "Negative": 3975,
+  "negative": 2060,
+  "positive": 1740,
+  "Neative": 1
+}
+2026-11-17 12:58:58,823 [INFO] All sentiment labels successfully validated and mapped to 5 classes: {'positive', 'neutral', 'negative', 'very negative', 'very positive'}
+2026-11-17 12:58:58,824 [INFO] Cleaned sentiment counts across 28,090 raw records:
+{
+  "neutral": 6445,
+  "positive": 6288,
+  "negative": 6036,
+  "very positive": 5008,
+  "very negative": 4313
+}
+2026-11-17 12:58:58,825 [INFO] Null counts per column: {'review': 0, 'translated_english': 0, 'sentiment_raw': 0, 'sentiment': 0}
+2026-11-17 12:58:58,851 [INFO] Total duplicate reviews: 4632 (16.5% of dataset)
+2026-11-17 12:58:58,851 [INFO] Exact duplicates across all columns: 1268
+2026-11-17 12:58:58,851 [INFO] Review texts with conflicting labels: 48
+2026-11-17 12:58:58,851 [INFO] Review texts with concordant labels: 23410
+2026-11-17 12:58:58,858 [INFO] Dataset shape after deduplication: (23458, 4) (retained 23458 / 28090 rows)
+2026-11-17 12:58:58,858 [INFO] Deduplicated sentiment class distribution:
+{
+  "neutral": 6066,
+  "positive": 5917,
+  "negative": 5731,
+  "very positive": 3159,
+  "very negative": 2585
+}
+2026-11-17 12:58:58,860 [INFO] --- Validating and Cleaning Lexicon Dataset ---
+2026-11-17 12:58:58,860 [INFO] Initial lexicon shape: (5219, 7)
+2026-11-17 12:58:58,860 [WARNING] Found 1 rows with null Common form. Imputing from var-1.
+2026-11-17 12:58:58,868 [INFO] Recorded variants per headword distribution: {1: 375, 2: 1591, 3: 1440, 4: 869, 5: 944}
+2026-11-17 12:58:58,979 [INFO] Total vocabulary across lexicon (common + all variants): 16077
+2026-11-17 12:58:58,979 [INFO] Total non-identical variant-common pairs: 10869
+2026-11-17 12:58:59,050 [INFO] Initializing PerturbationEngine with lexicon: C:\Users\Daama\Desktop\DSTT PROJECT\data_processed\cleaned_lexicon.csv
+2026-11-17 12:58:59,178 [INFO] Indexed 16077 surface word forms pointing to lexicon entries.

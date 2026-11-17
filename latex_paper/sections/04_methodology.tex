@@ -1,0 +1,63 @@
+\section{Methodology and Model Architectures}
+\label{sec:methodology}
+
+To systematically investigate model resilience, we benchmark four distinct modeling paradigms spanning classical linear estimators, fully fine-tuned multilingual encoders, and parameter-efficient adapted transformers.
+
+\subsection{Classical Baseline: TF-IDF + Logistic Regression}
+As an interpretable non-neural reference, we implement a linear multiclass classifier trained on Term Frequency-Inverse Document Frequency (TF-IDF) feature representations. The pipeline extracts sublinear-scaled word and character n-grams ($n \in [1, 3]$) constrained to the top 10,000 features. Classification is performed via multinomial Logistic Regression optimized with an $L_2$ regularization penalty ($C=1.0$) and the L-BFGS solver.
+
+\subsection{Multilingual Pre-Trained Transformers (Full Fine-Tuning)}
+We evaluate two widely adopted multilingual bidirectional transformer architectures under full parameter fine-tuning:
+\begin{enumerate}
+    \item \textbf{Multilingual BERT (\mbox{mBERT}):} The \texttt{bert-base-multilingual-cased} checkpoint~\cite{devlin2019bert} features 12 transformer encoder layers, 768 hidden dimensions, 12 attention heads, and a WordPiece vocabulary of 119,547 tokens (total parameters: $\approx 178\text{M}$).
+    \item \textbf{XLM-RoBERTa (\mbox{XLM-R}):} The \texttt{xlm-roberta-base} checkpoint~\cite{conneau2020unsupervised} comprises 12 layers, 768 hidden dimensions, 12 attention heads, and a SentencePiece byte-level BPE vocabulary of 250,002 tokens (total parameters: $\approx 278\text{M}$).
+\end{enumerate}
+For both architectures, sequence classification heads consisting of a dropout layer ($p=0.1$) and a linear projection $W \in \mathbb{R}^{768 \times 5}$ are affixed to the pooled classification token (\texttt{[CLS]} in BERT, \texttt{<s>} in RoBERTa). All parameters are updated end-to-end via cross-entropy loss minimization.
+
+\subsection{Parameter-Efficient Adaptation: LoRA for XLM-RoBERTa}
+In contrast to full fine-tuning, Low-Rank Adaptation (LoRA)~\cite{hu2022lora} freezes the pre-trained transformer backbone weights $W_0 \in \mathbb{R}^{d \times k}$ and injects low-rank trainable decomposition matrices into the multi-head self-attention projections. 
+
+For an attention weight matrix $W$, the forward pass computation is parameterized as:
+\begin{equation}
+    h = W_0 x + \Delta W x = W_0 x + \frac{\alpha}{r} B A x
+\end{equation}
+where $B \in \mathbb{R}^{d \times r}$ is initialized to zero, $A \in \mathbb{R}^{r \times k}$ is initialized with Gaussian noise $\mathcal{N}(0, \sigma^2)$, $r$ denotes the intrinsic rank, and $\alpha$ is a scaling hyperparameter. 
+
+We target the query ($W_q$) and value ($W_v$) projection layers of all 12 transformer blocks in \texttt{xlm-roberta-base}, setting $r=16$, $\alpha=32$, and LoRA dropout to $0.1$. As detailed in Table~\ref{tab:model_parameters}, this parameterization requires updating only 1,770,757 parameters---representing merely \textbf{0.63\%} of the total model capacity. Consequently, peak GPU VRAM allocation drops from 5.2\,GB to 3.1\,GB, enabling faster convergence and lower memory footprints while theoretically providing strong regularization against overfitting to training-set orthography.
+
+\begin{table}[htbp]
+\caption{Architectural and Training Parameter Comparison}
+\label{tab:model_parameters}
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Model Architecture} & \textbf{Total Params} & \textbf{Trainable} & \textbf{\% Train} & \textbf{VRAM (GB)} \\
+\midrule
+TF-IDF + Logistic Reg. & 10,000 & 10,000 & 100.0\% & $<$ 0.5 \\
+mBERT (Full FT) & 177.85M & 177.85M & 100.0\% & 4.8 \\
+XLM-RoBERTa (Full FT) & 278.04M & 278.04M & 100.0\% & 5.2 \\
+\textbf{XLM-RoBERTa (LoRA)} & \textbf{279.81M} & \textbf{1.77M} & \textbf{0.63\%} & \textbf{3.1} \\
+\bottomrule
+\end{tabular}%
+}
+\end{table}
+
+\subsection{Hyperparameters and Optimization Setup}
+All neural models were implemented in PyTorch~\cite{paszke2019pytorch} utilizing the Hugging Face \texttt{transformers}~\cite{wolf2020huggingface} and \texttt{peft} libraries. Training was conducted using the AdamW optimizer~\cite{loshchilov2019adamw} with a linear learning rate decay schedule and a 10\% warmup phase. The maximum token sequence length was set to 128 (covering 99.4\% of corpus instances without truncation). The batch size was fixed at 32. Full fine-tuning models were trained with an initial learning rate $\eta = 2 \times 10^{-5}$, whereas LoRA models were optimized with $\eta = 2 \times 10^{-4}$ to compensate for low-rank subspace projection. Models were trained for up to 5 epochs with early stopping triggered on validation Macro-F1 (patience of 2 epochs).
+
+\subsection{Evaluation Metrics and Statistical Testing}
+Because sentiment distribution exhibits mild class imbalance across the five ordinal categories, Macro-averaged F1 ($\text{Macro-F1}$) serves as the primary evaluation criterion, complemented by Accuracy, Macro-Precision, and Macro-Recall:
+\begin{equation}
+    \text{Macro-F1} = \frac{1}{|\mathcal{C}|} \sum_{c \in \mathcal{C}} \frac{2 \cdot P_c \cdot R_c}{P_c + R_c}
+\end{equation}
+To quantify performance drop relative to the pristine test condition, we define relative degradation $\Delta_{\text{rel}}$ as:
+\begin{equation}
+    \Delta_{\text{rel}}(M, \text{cond}) = \frac{\text{Metric}_{\text{clean}}(M) - \text{Metric}_{\text{cond}}(M)}{\text{Metric}_{\text{clean}}(M)} \times 100\%
+\end{equation}
+
+To establish whether observed performance differentials between architectures and conditions are statistically meaningful, we employ two complementary statistical tests:
+\begin{enumerate}
+    \item \textbf{Paired Non-Parametric Bootstrap Resampling:} We sample with replacement $B=1,000$ bootstrap replicates of the test set to compute empirical 95\% confidence intervals for Macro-F1 and Accuracy differentials.
+    \item \textbf{Exact McNemar's Test:} To evaluate pairwise classifier disagreements on binary prediction outcomes (correct vs. incorrect), we compute McNemar's contingency test statistic with continuity correction.
+\end{enumerate}

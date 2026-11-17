@@ -1,0 +1,19 @@
+{
+  "total_pairs_analyzed": 10869,
+  "mbert": {
+    "mean_common_subwords": 2.4721685527647437,
+    "mean_variant_subwords": 2.595270954089613,
+    "pct_fragmentation_increase": 24.252461127978655,
+    "pct_unchanged": 63.170484865213,
+    "pct_decreased": 12.577054006808355,
+    "mean_increase": 0.1231024013248689
+  },
+  "xlmr": {
+    "mean_common_subwords": 2.2767503910203333,
+    "mean_variant_subwords": 2.448155304075812,
+    "pct_fragmentation_increase": 27.45422761983623,
+    "pct_unchanged": 60.87956573741835,
+    "pct_decreased": 11.666206642745424,
+    "mean_increase": 0.1714049130554789
+  }
+}

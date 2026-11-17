@@ -1,0 +1,559 @@
+2026-11-15 22:55:53,443 [INFO] ================================================================
+2026-11-15 22:55:53,443 [INFO] STARTING MASTER EXPERIMENTAL EVALUATION PIPELINE
+2026-11-15 22:55:53,443 [INFO] ================================================================
+2026-11-15 22:55:53,443 [INFO] 
+>>> STAGE 1: Running Experiment A (Zero-Shot Robustness & Factorial Grid)...
+2026-11-15 22:55:53,472 [INFO] Using compute device: cuda
+2026-11-15 22:55:53,565 [INFO] Loading existing TF-IDF Baseline from C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\checkpoints\tfidf_baseline.joblib
+2026-11-15 22:55:53,671 [INFO] Loading existing mBERT from C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\checkpoints\full_mbert
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:  10%|#         | 21/201 [00:00<00:00, 197.96it/s]Loading weights:  21%|##        | 42/201 [00:00<00:00, 197.53it/s]Loading weights: 100%|##########| 201/201 [00:00<00:00, 800.71it/s]
+2026-11-15 22:55:55,229 [INFO] Loading existing XLM-RoBERTa (Full) from C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\checkpoints\full_xlm_roberta
+Loading weights:   0%|          | 0/201 [00:00<?, ?it/s]Loading weights:   8%|8         | 17/201 [00:00<00:01, 154.40it/s]Loading weights:  16%|#6        | 33/201 [00:00<00:01, 120.94it/s]Loading weights:  29%|##9       | 59/201 [00:00<00:00, 173.26it/s]Loading weights: 100%|##########| 201/201 [00:00<00:00, 459.44it/s]
+2026-11-15 22:55:58,843 [INFO] === 4. Training XLM-RoBERTa LoRA Adaptation ===
+2026-11-15 22:55:58,845 [INFO] --- Starting Training: lora_xlm_roberta_base on cuda (Epochs=3, BatchSize=32, LR=0.0002) ---
+2026-11-15 22:55:59,260 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:55:59,520 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+2026-11-15 22:55:59,799 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:56:00,069 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-11-15 22:56:00,332 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:56:00,592 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-11-15 22:56:03,490 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:56:03,746 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+2026-11-15 22:56:04,051 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:56:04,418 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+2026-11-15 22:56:04,689 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:56:04,947 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights:  15%|#4        | 29/197 [00:00<00:00, 261.76it/s]Loading weights:  28%|##8       | 56/197 [00:00<00:00, 195.80it/s]Loading weights: 100%|##########| 197/197 [00:00<00:00, 593.23it/s]
+[transformers] [1mXLMRobertaForSequenceClassification LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     | 
+----------------------------+------------+-
+roberta.pooler.dense.bias   | UNEXPECTED | 
+lm_head.layer_norm.weight   | UNEXPECTED | 
+lm_head.dense.weight        | UNEXPECTED | 
+lm_head.dense.bias          | UNEXPECTED | 
+lm_head.bias                | UNEXPECTED | 
+lm_head.layer_norm.bias     | UNEXPECTED | 
+roberta.pooler.dense.weight | UNEXPECTED | 
+classifier.dense.weight     | MISSING    | 
+classifier.out_proj.bias    | MISSING    | 
+classifier.dense.bias       | MISSING    | 
+classifier.out_proj.weight  | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+LoRA Model Parameter Summary:
+trainable params: 1,184,261 || all params: 279,231,754 || trainable%: 0.4241
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:124: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=(device.type == "cuda"))
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:141: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:162: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:56:52,335 [INFO] Epoch 1/3 [40.4s]: Train Loss=1.4484 | Val Acc=0.4757 | Val Macro-F1=0.4757
+2026-11-15 22:56:52,336 [INFO] --> Best model improved to Macro-F1=0.4757. Saving checkpoint...
+2026-11-15 22:56:52,740 [INFO] HTTP Request: HEAD https://huggingface.co/xlm-roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-11-15 22:56:52,740 [WARNING] Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+2026-11-15 22:56:52,999 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/revision/main "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:56:53,270 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/revision/main "HTTP/1.1 200 OK"
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:141: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:162: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:57:46,659 [INFO] Epoch 2/3 [47.8s]: Train Loss=1.2665 | Val Acc=0.5010 | Val Macro-F1=0.4954
+2026-11-15 22:57:46,659 [INFO] --> Best model improved to Macro-F1=0.4954. Saving checkpoint...
+2026-11-15 22:57:47,050 [INFO] HTTP Request: HEAD https://huggingface.co/xlm-roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-11-15 22:57:47,319 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/revision/main "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:57:47,576 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/revision/main "HTTP/1.1 200 OK"
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:141: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:162: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:29,280 [INFO] Epoch 3/3 [38.3s]: Train Loss=1.1952 | Val Acc=0.5007 | Val Macro-F1=0.5047
+2026-11-15 22:58:29,280 [INFO] --> Best model improved to Macro-F1=0.5047. Saving checkpoint...
+2026-11-15 22:58:29,641 [INFO] HTTP Request: HEAD https://huggingface.co/xlm-roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-11-15 22:58:29,901 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/revision/main "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 22:58:30,155 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/revision/main "HTTP/1.1 200 OK"
+2026-11-15 22:58:30,210 [INFO] Training complete for lora_xlm_roberta_base. Best Val Macro-F1: 0.5047
+2026-11-15 22:58:30,213 [INFO] === 5. Evaluating Models Across Severity Conditions ===
+2026-11-15 22:58:30,237 [INFO] Evaluating TF-IDF + LR on condition: clean...
+2026-11-15 22:58:31,168 [INFO] Evaluating mBERT (Full) on condition: clean...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:34,586 [INFO] Evaluating XLM-RoBERTa (Full) on condition: clean...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:37,804 [INFO] Evaluating XLM-RoBERTa (LoRA) on condition: clean...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:41,326 [INFO] Evaluating TF-IDF + LR on condition: mild...
+2026-11-15 22:58:41,640 [INFO] Evaluating mBERT (Full) on condition: mild...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:44,848 [INFO] Evaluating XLM-RoBERTa (Full) on condition: mild...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:48,079 [INFO] Evaluating XLM-RoBERTa (LoRA) on condition: mild...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:51,607 [INFO] Evaluating TF-IDF + LR on condition: moderate...
+2026-11-15 22:58:51,936 [INFO] Evaluating mBERT (Full) on condition: moderate...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:55,157 [INFO] Evaluating XLM-RoBERTa (Full) on condition: moderate...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:58:58,406 [INFO] Evaluating XLM-RoBERTa (LoRA) on condition: moderate...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:59:01,945 [INFO] Evaluating TF-IDF + LR on condition: severe...
+2026-11-15 22:59:02,261 [INFO] Evaluating mBERT (Full) on condition: severe...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:59:05,568 [INFO] Evaluating XLM-RoBERTa (Full) on condition: severe...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:59:08,931 [INFO] Evaluating XLM-RoBERTa (LoRA) on condition: severe...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 22:59:12,646 [INFO] Canonical Results Table:
+             model condition  accuracy  macro_f1  delta_macro_f1  rel_drop_macro_f1_pct
+       TF-IDF + LR     clean  0.544473  0.550812        0.000000               0.000000
+      mBERT (Full)     clean  0.579142  0.598060        0.000000               0.000000
+XLM-RoBERTa (Full)     clean  0.485649  0.483804        0.000000               0.000000
+XLM-RoBERTa (LoRA)     clean  0.522023  0.529388        0.000000               0.000000
+       TF-IDF + LR      mild  0.508667  0.513548        0.037264               6.765331
+      mBERT (Full)      mild  0.563228  0.581829        0.016231               2.713946
+XLM-RoBERTa (Full)      mild  0.474282  0.475070        0.008735               1.805439
+XLM-RoBERTa (LoRA)      mild  0.512646  0.519706        0.009682               1.828835
+       TF-IDF + LR  moderate  0.490764  0.492427        0.058385              10.599779
+      mBERT (Full)  moderate  0.550725  0.570548        0.027512               4.600188
+XLM-RoBERTa (Full)  moderate  0.462631  0.464488        0.019316               3.992542
+XLM-RoBERTa (LoRA)  moderate  0.507815  0.515693        0.013695               2.586861
+       TF-IDF + LR    severe  0.466041  0.460360        0.090452              16.421546
+      mBERT (Full)    severe  0.534527  0.554475        0.043585               7.287706
+XLM-RoBERTa (Full)    severe  0.451549  0.449880        0.033925               7.012091
+XLM-RoBERTa (LoRA)    severe  0.496448  0.504590        0.024797               4.684141
+2026-11-15 22:59:12,647 [INFO] === 6. Evaluating Models Across 3x3 Factorial Grid ===
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:00:47,340 [INFO] === 7. Running Statistical Significance Tests ===
+2026-11-15 23:01:29,861 [INFO] Significance Summary:
+{
+  "xlmr_full_vs_lora_clean": {
+    "f1_a": 0.48380444533840816,
+    "f1_b": 0.5293876585106958,
+    "delta": -0.04558321317228764,
+    "ci_95_lower": -0.060568954848686844,
+    "ci_95_upper": -0.03019762401254731,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "xlmr_full_vs_lora_severe": {
+    "f1_a": 0.44987963603388137,
+    "f1_b": 0.5045903949985386,
+    "delta": -0.05471075896465727,
+    "ci_95_lower": -0.07067937335512986,
+    "ci_95_upper": -0.03711732100084016,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "mcnemar_xlmr_full_vs_lora_severe": {
+    "chi2": 29.913834951456312,
+    "p_value": 4.516783989065563e-08,
+    "n01": 491,
+    "n10": 333,
+    "significant": true
+  },
+  "xlmr_full_clean_vs_severe": {
+    "f1_a": 0.48380444533840816,
+    "f1_b": 0.44987963603388137,
+    "delta": 0.03392480930452679,
+    "ci_95_lower": 0.02104899310294024,
+    "ci_95_upper": 0.047428694677755574,
+    "p_value": 0.0,
+    "significant_p05": true,
+    "significant_p01": true
+  },
+  "xlmr_lora_clean_vs_severe": {
+    "f1_a": 0.5293876585106958,
+    "f1_b": 0.5045903949985386,
+    "delta": 0.024797263512157164,
+    "ci_95_lower": 0.009636224899417034,
+    "ci_95_upper": 0.03919258010679988,
+    "p_value": 0.001,
+    "significant_p05": true,
+    "significant_p01": true
+  }
+}
+2026-11-15 23:01:29,861 [INFO] === 8. Generating Visualizations ===
+2026-11-15 23:01:31,563 [INFO] Experiment A successfully completed!
+2026-11-15 23:01:32,216 [INFO] 
+>>> STAGE 2: Running Experiment B (Augmented Training vs Clean)...
+2026-11-15 23:01:32,320 [INFO] Initializing PerturbationEngine with lexicon: C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\data_processed\cleaned_lexicon.csv
+2026-11-15 23:01:32,586 [INFO] Indexed 16077 surface word forms pointing to lexicon entries.
+2026-11-15 23:01:32,586 [INFO] Generating augmented training data from 16,420 base training records...
+2026-11-15 23:01:34,206 [INFO] Saved augmented train set (N=24,630) to C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\data_processed\train_augmented.csv
+2026-11-15 23:01:34,220 [INFO] Training Augmented TF-IDF Baseline...
+2026-11-15 23:01:34,220 [INFO] Training TF-IDF + Logistic Regression baseline...
+C:\Users\Daama\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\sklearn\linear_model\_logistic.py:1184: FutureWarning: 'n_jobs' has no effect since 1.8 and will be removed in 1.10. You provided 'n_jobs=-1', please leave it unspecified.
+  warnings.warn(msg, category=FutureWarning)
+2026-11-15 23:01:39,258 [INFO] TF-IDF training completed in 5.04 seconds. Saving to C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\checkpoints\tfidf_augmented.joblib
+2026-11-15 23:01:39,943 [INFO] TF-IDF Validation: Accuracy=0.5536, Macro-F1=0.5618
+2026-11-15 23:01:39,943 [INFO] Training Augmented XLM-RoBERTa LoRA...
+2026-11-15 23:01:39,945 [INFO] --- Starting Training: lora_xlm_roberta_base on cuda (Epochs=3, BatchSize=32, LR=0.0002) ---
+2026-11-15 23:01:40,341 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:01:40,595 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+2026-11-15 23:01:40,854 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:01:41,114 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/tree/main/additional_chat_templates?recursive=false&expand=false "HTTP/1.1 404 Not Found"
+2026-11-15 23:01:41,373 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:01:41,629 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/tree/main?recursive=true&expand=false "HTTP/1.1 200 OK"
+2026-11-15 23:01:44,583 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:01:44,853 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+2026-11-15 23:01:45,144 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:01:45,403 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+2026-11-15 23:01:45,681 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:01:45,965 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights:  15%|#5        | 30/197 [00:00<00:00, 288.54it/s]Loading weights:  30%|##9       | 59/197 [00:00<00:00, 288.84it/s]Loading weights:  45%|####4     | 88/197 [00:00<00:00, 243.30it/s]Loading weights: 100%|##########| 197/197 [00:00<00:00, 562.68it/s]
+[transformers] [1mXLMRobertaForSequenceClassification LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     | 
+----------------------------+------------+-
+roberta.pooler.dense.bias   | UNEXPECTED | 
+lm_head.layer_norm.weight   | UNEXPECTED | 
+lm_head.dense.weight        | UNEXPECTED | 
+lm_head.dense.bias          | UNEXPECTED | 
+lm_head.bias                | UNEXPECTED | 
+lm_head.layer_norm.bias     | UNEXPECTED | 
+roberta.pooler.dense.weight | UNEXPECTED | 
+classifier.dense.weight     | MISSING    | 
+classifier.out_proj.bias    | MISSING    | 
+classifier.dense.bias       | MISSING    | 
+classifier.out_proj.weight  | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+LoRA Model Parameter Summary:
+trainable params: 1,184,261 || all params: 279,231,754 || trainable%: 0.4241
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:124: FutureWarning: `torch.cuda.amp.GradScaler(args...)` is deprecated. Please use `torch.amp.GradScaler('cuda', args...)` instead.
+  scaler = torch.cuda.amp.GradScaler(enabled=(device.type == "cuda"))
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:141: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:162: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:02:47,591 [INFO] Epoch 1/3 [55.7s]: Train Loss=1.4227 | Val Acc=0.4717 | Val Macro-F1=0.4759
+2026-11-15 23:02:47,591 [INFO] --> Best model improved to Macro-F1=0.4759. Saving checkpoint...
+2026-11-15 23:02:47,979 [INFO] HTTP Request: HEAD https://huggingface.co/xlm-roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-11-15 23:02:48,251 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/revision/main "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:02:48,506 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/revision/main "HTTP/1.1 200 OK"
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:141: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:162: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:03:47,070 [INFO] Epoch 2/3 [54.9s]: Train Loss=1.2313 | Val Acc=0.5078 | Val Macro-F1=0.5056
+2026-11-15 23:03:47,070 [INFO] --> Best model improved to Macro-F1=0.5056. Saving checkpoint...
+2026-11-15 23:03:47,489 [INFO] HTTP Request: HEAD https://huggingface.co/xlm-roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-11-15 23:03:47,735 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/revision/main "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:03:47,984 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/revision/main "HTTP/1.1 200 OK"
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:141: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\train.py:162: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:04:47,082 [INFO] Epoch 3/3 [55.2s]: Train Loss=1.1571 | Val Acc=0.5180 | Val Macro-F1=0.5229
+2026-11-15 23:04:47,082 [INFO] --> Best model improved to Macro-F1=0.5229. Saving checkpoint...
+2026-11-15 23:04:47,495 [INFO] HTTP Request: HEAD https://huggingface.co/xlm-roberta-base/resolve/main/config.json "HTTP/1.1 200 OK"
+2026-11-15 23:04:47,758 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base/revision/main "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:04:48,027 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base/revision/main "HTTP/1.1 200 OK"
+2026-11-15 23:04:48,105 [INFO] Training complete for lora_xlm_roberta_base. Best Val Macro-F1: 0.5229
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:05:04,704 [INFO] Experiment B completed successfully!
+2026-11-15 23:05:04,976 [INFO] 
+>>> STAGE 3: Running Experiment C (Normalization Ablation & Density)...
+2026-11-15 23:05:04,977 [INFO] Initializing RomanUrduNormalizer with lexicon: C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\data_processed\cleaned_lexicon.csv
+2026-11-15 23:05:05,175 [INFO] Built normalization dictionary mapping 10,868 non-canonical variants to Common forms.
+2026-11-15 23:05:05,176 [INFO] Loading pre-trained models from checkpoints...
+2026-11-15 23:05:08,502 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:05:08,759 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights:  11%|#         | 21/197 [00:00<00:00, 204.26it/s]Loading weights:  23%|##3       | 46/197 [00:00<00:00, 224.39it/s]Loading weights:  37%|###7      | 73/197 [00:00<00:00, 233.54it/s]Loading weights: 100%|##########| 197/197 [00:00<00:00, 538.78it/s]
+[transformers] [1mXLMRobertaForSequenceClassification LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     | 
+----------------------------+------------+-
+roberta.pooler.dense.bias   | UNEXPECTED | 
+lm_head.layer_norm.weight   | UNEXPECTED | 
+lm_head.dense.weight        | UNEXPECTED | 
+lm_head.dense.bias          | UNEXPECTED | 
+lm_head.bias                | UNEXPECTED | 
+lm_head.layer_norm.bias     | UNEXPECTED | 
+roberta.pooler.dense.weight | UNEXPECTED | 
+classifier.dense.weight     | MISSING    | 
+classifier.out_proj.bias    | MISSING    | 
+classifier.dense.bias       | MISSING    | 
+classifier.out_proj.weight  | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+2026-11-15 23:05:10,565 [INFO] Applying normalization 'Condition A: Raw (No Norm)' to severe test set...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:05:14,624 [INFO] Applying normalization 'Condition B: Generic Preprocessing' to severe test set...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:05:18,406 [INFO] Applying normalization 'Condition C: Lexicon Normalization' to severe test set...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:05:22,268 [INFO] Applying normalization 'Condition D: Combined (Generic + Lexicon)' to severe test set...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:05:29,974 [INFO] Normalization Results:
+             model                   normalization_condition  macro_f1  f1_gain_over_raw  pct_degradation_recovered
+       TF-IDF + LR                Condition A: Raw (No Norm)  0.460360          0.000000                   0.000000
+XLM-RoBERTa (LoRA)                Condition A: Raw (No Norm)  0.504652          0.000000                   0.000000
+       TF-IDF + LR        Condition B: Generic Preprocessing  0.459299         -0.001061                   0.000000
+XLM-RoBERTa (LoRA)        Condition B: Generic Preprocessing  0.500613         -0.004039                   0.000000
+       TF-IDF + LR        Condition C: Lexicon Normalization  0.545197          0.084837                  93.792487
+XLM-RoBERTa (LoRA)        Condition C: Lexicon Normalization  0.525900          0.021248                  84.231065
+       TF-IDF + LR Condition D: Combined (Generic + Lexicon)  0.537397          0.077036                  85.168481
+XLM-RoBERTa (LoRA) Condition D: Combined (Generic + Lexicon)  0.525223          0.020571                  81.546219
+2026-11-15 23:06:28,071 [INFO] Computing degradation across variant density quartiles (RQ3)...
+Traceback (most recent call last):
+  File "C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\run_all_experiments.py", line 102, in <module>
+    run_master_pipeline()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\run_all_experiments.py", line 46, in run_master_pipeline
+    res_c, density_c, sig_c = run_experiment_c()
+                              ~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_C_normalization.py", line 142, in run_experiment_c
+    severe_test_df["density_bin"] = pd.qcut(
+                                    ~~~~~~~^
+        severe_test_df["actual_rate"].clip(lower=0.01),
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        q=4,
+        ^^^^
+        labels=["Q1 (Low Density)", "Q2 (Medium-Low)", "Q3 (Medium-High)", "Q4 (High Density)"]
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Daama\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\reshape\tile.py", line 384, in qcut
+    fac, bins = _bins_to_cuts(
+                ~~~~~~~~~~~~~^
+        x_idx,
+        ^^^^^^
+    ...<4 lines>...
+        duplicates=duplicates,
+        ^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\Daama\AppData\Local\Python\pythoncore-3.14-64\Lib\site-packages\pandas\core\reshape\tile.py", line 487, in _bins_to_cuts
+    raise ValueError(
+    ...<2 lines>...
+    )
+ValueError: Bin edges must be unique: Index([0.01, 0.75, 0.8181818181818182, 1.0, 1.0], dtype='float64', name='actual_rate').
+You can drop duplicate edges by setting the 'duplicates' kwarg
+  File "C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\run_all_experiments.py", line 38
+    logger.info("
+                ^
+SyntaxError: unterminated string literal (detected at line 38)
+2026-11-15 23:09:45,014 [INFO] ================================================================
+2026-11-15 23:09:45,014 [INFO] STARTING MASTER EXPERIMENTAL EVALUATION PIPELINE
+2026-11-15 23:09:45,014 [INFO] ================================================================
+2026-11-15 23:09:45,014 [INFO] >>> STAGE 1: Experiment A already completed. Skipping to next stage.
+2026-11-15 23:09:45,014 [INFO] >>> STAGE 2: Experiment B already completed. Skipping to next stage.
+2026-11-15 23:09:45,015 [INFO] >>> STAGE 3: Running Experiment C (Normalization Ablation & Density)...
+2026-11-15 23:09:45,060 [INFO] Initializing RomanUrduNormalizer with lexicon: C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\data_processed\cleaned_lexicon.csv
+2026-11-15 23:09:45,311 [INFO] Built normalization dictionary mapping 10,868 non-canonical variants to Common forms.
+2026-11-15 23:09:45,311 [INFO] Loading pre-trained models from checkpoints...
+2026-11-15 23:09:48,780 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:09:49,035 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights:  16%|#5        | 31/197 [00:00<00:00, 277.03it/s]Loading weights:  32%|###1      | 63/197 [00:00<00:00, 297.08it/s]Loading weights: 100%|##########| 197/197 [00:00<00:00, 894.42it/s]
+[transformers] [1mXLMRobertaForSequenceClassification LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     | 
+----------------------------+------------+-
+lm_head.bias                | UNEXPECTED | 
+lm_head.dense.weight        | UNEXPECTED | 
+lm_head.layer_norm.bias     | UNEXPECTED | 
+lm_head.layer_norm.weight   | UNEXPECTED | 
+lm_head.dense.bias          | UNEXPECTED | 
+roberta.pooler.dense.bias   | UNEXPECTED | 
+roberta.pooler.dense.weight | UNEXPECTED | 
+classifier.dense.weight     | MISSING    | 
+classifier.out_proj.weight  | MISSING    | 
+classifier.dense.bias       | MISSING    | 
+classifier.out_proj.bias    | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+2026-11-15 23:09:50,636 [INFO] Applying normalization 'Condition A: Raw (No Norm)' to severe test set...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:09:54,917 [INFO] Applying normalization 'Condition B: Generic Preprocessing' to severe test set...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:09:58,789 [INFO] Applying normalization 'Condition C: Lexicon Normalization' to severe test set...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:10:02,669 [INFO] Applying normalization 'Condition D: Combined (Generic + Lexicon)' to severe test set...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:10:10,001 [INFO] Normalization Results:
+             model                   normalization_condition  macro_f1  f1_gain_over_raw  pct_degradation_recovered
+       TF-IDF + LR                Condition A: Raw (No Norm)  0.460360          0.000000                   0.000000
+XLM-RoBERTa (LoRA)                Condition A: Raw (No Norm)  0.504652          0.000000                   0.000000
+       TF-IDF + LR        Condition B: Generic Preprocessing  0.459299         -0.001061                   0.000000
+XLM-RoBERTa (LoRA)        Condition B: Generic Preprocessing  0.500613         -0.004039                   0.000000
+       TF-IDF + LR        Condition C: Lexicon Normalization  0.545197          0.084837                  93.792487
+XLM-RoBERTa (LoRA)        Condition C: Lexicon Normalization  0.525900          0.021248                  84.231065
+       TF-IDF + LR Condition D: Combined (Generic + Lexicon)  0.537397          0.077036                  85.168481
+XLM-RoBERTa (LoRA) Condition D: Combined (Generic + Lexicon)  0.525223          0.020571                  81.546219
+2026-11-15 23:11:04,798 [INFO] Computing degradation across variant density quartiles (RQ3)...
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:11:17,210 [INFO] Experiment C completed successfully!
+2026-11-15 23:11:17,514 [INFO] >>> STAGE 4: Running External Validation on RUECD (Daraz.pk reviews)...
+2026-11-15 23:11:17,755 [INFO] Initializing PerturbationEngine with lexicon: C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\data_processed\cleaned_lexicon.csv
+2026-11-15 23:11:18,050 [INFO] Indexed 16077 surface word forms pointing to lexicon entries.
+Traceback (most recent call last):
+  File "C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\run_all_experiments.py", line 111, in <module>
+    run_master_pipeline()
+    ~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\run_all_experiments.py", line 60, in run_master_pipeline
+    ruecd_tfidf_res = evaluate_model_on_ruecd(
+        predict_fn=lambda texts: tfidf_model.predict([str(t) for t in texts]),
+        model_name="TF-IDF + LR",
+        disjoint_only=True
+    )
+  File "C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\external_validation.py", line 93, in evaluate_model_on_ruecd
+    perturbed_texts = [engine.perturb_text(t, rate=0.20, distance_strategy="low", seed=42+i)[0] for i, t in enumerate(df_sample["review"])]
+                       ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\src\perturbation_engine.py", line 134, in perturb_text
+    tokens = re.findall(r'\b[a-zA-Z]+\b|[^\w\s]|\s+', text)
+  File "C:\Users\Daama\AppData\Local\Python\pythoncore-3.14-64\Lib\re\__init__.py", line 278, in findall
+    return _compile(pattern, flags).findall(string)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^
+TypeError: expected string or bytes-like object, got 'float'
+2026-11-15 23:12:56,187 [INFO] ================================================================
+2026-11-15 23:12:56,187 [INFO] STARTING MASTER EXPERIMENTAL EVALUATION PIPELINE
+2026-11-15 23:12:56,187 [INFO] ================================================================
+2026-11-15 23:12:56,188 [INFO] >>> STAGE 1: Experiment A already completed. Skipping to next stage.
+2026-11-15 23:12:56,188 [INFO] >>> STAGE 2: Experiment B already completed. Skipping to next stage.
+2026-11-15 23:12:56,188 [INFO] >>> STAGE 3: Experiment C already completed. Skipping to next stage.
+2026-11-15 23:12:56,188 [INFO] >>> STAGE 4: Running External Validation on RUECD (Daraz.pk reviews)...
+2026-11-15 23:12:56,443 [INFO] Initializing PerturbationEngine with lexicon: C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\data_processed\cleaned_lexicon.csv
+2026-11-15 23:12:56,700 [INFO] Indexed 16077 surface word forms pointing to lexicon entries.
+2026-11-15 23:13:01,652 [INFO] HTTP Request: GET https://huggingface.co/api/models/xlm-roberta-base "HTTP/1.1 307 Temporary Redirect"
+2026-11-15 23:13:01,906 [INFO] HTTP Request: GET https://huggingface.co/api/models/FacebookAI/xlm-roberta-base "HTTP/1.1 200 OK"
+Loading weights:   0%|          | 0/197 [00:00<?, ?it/s]Loading weights:  12%|#2        | 24/197 [00:00<00:00, 237.89it/s]Loading weights:  29%|##9       | 58/197 [00:00<00:00, 292.10it/s]Loading weights: 100%|##########| 197/197 [00:00<00:00, 814.71it/s]
+[transformers] [1mXLMRobertaForSequenceClassification LOAD REPORT[0m from: xlm-roberta-base
+Key                         | Status     | 
+----------------------------+------------+-
+lm_head.dense.bias          | UNEXPECTED | 
+roberta.pooler.dense.bias   | UNEXPECTED | 
+lm_head.layer_norm.weight   | UNEXPECTED | 
+lm_head.layer_norm.bias     | UNEXPECTED | 
+roberta.pooler.dense.weight | UNEXPECTED | 
+lm_head.dense.weight        | UNEXPECTED | 
+lm_head.bias                | UNEXPECTED | 
+classifier.out_proj.weight  | MISSING    | 
+classifier.dense.weight     | MISSING    | 
+classifier.out_proj.bias    | MISSING    | 
+classifier.dense.bias       | MISSING    | 
+
+Notes:
+- UNEXPECTED:	can be ignored when loading from different task/architecture; not ok if you expect identical arch.
+- MISSING:	those params were newly initialized because missing from the checkpoint. Consider training on your downstream task.
+2026-11-15 23:13:03,552 [INFO] Initializing PerturbationEngine with lexicon: C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\data_processed\cleaned_lexicon.csv
+2026-11-15 23:13:03,807 [INFO] Indexed 16077 surface word forms pointing to lexicon entries.
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+C:\Users\Daama\Desktop\MS Work\1st Semester\DS T&T\Project\experiments\experiment_A_zeroshot.py:69: FutureWarning: `torch.cuda.amp.autocast(args...)` is deprecated. Please use `torch.amp.autocast('cuda', args...)` instead.
+  with torch.cuda.amp.autocast(enabled=(device.type == "cuda")):
+2026-11-15 23:13:17,426 [INFO] External Validation Results:
+             model          dataset condition  accuracy  macro_f1  macro_precision  macro_recall  n_samples
+       TF-IDF + LR RUECD (Daraz.pk)     clean  0.510333  0.497184         0.498803      0.504520       3000
+       TF-IDF + LR RUECD (Daraz.pk)      mild  0.503000  0.489587         0.490474      0.498342       3000
+       TF-IDF + LR RUECD (Daraz.pk)  moderate  0.495667  0.480594         0.482654      0.489912       3000
+       TF-IDF + LR RUECD (Daraz.pk)    severe  0.476333  0.462448         0.466364      0.469749       3000
+XLM-RoBERTa (LoRA) RUECD (Daraz.pk)     clean  0.508000  0.495934         0.502239      0.500599       3000
+XLM-RoBERTa (LoRA) RUECD (Daraz.pk)      mild  0.502000  0.490696         0.493766      0.495700       3000
+XLM-RoBERTa (LoRA) RUECD (Daraz.pk)  moderate  0.507333  0.496669         0.498669      0.501758       3000
+XLM-RoBERTa (LoRA) RUECD (Daraz.pk)    severe  0.475667  0.467374         0.467112      0.472951       3000
+2026-11-15 23:13:17,426 [INFO] ================================================================
+2026-11-15 23:13:17,426 [INFO] ALL EXPERIMENTS SUCCESSFULLY EXECUTED IN 0.35 MINUTES
+2026-11-15 23:13:17,426 [INFO] ================================================================
